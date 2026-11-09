@@ -51,7 +51,8 @@
         <div id="view-detail" class="view-section hide">
             <button onclick="navigate('home')" class="text-gray-400 hover:text-purple-400 mb-6"><i class="fas fa-arrow-left"></i> Quay lại</button>
             <div class="flex flex-col md:flex-row gap-8">
-                <img id="det-cover" src="" class="w-full md:w-64 h-96 object-cover rounded-xl shadow-2xl">
+                <!-- Đã thêm onerror để tự động hiện ảnh mặc định nếu dán sai link -->
+                <img id="det-cover" src="" onerror="this.src='https://via.placeholder.com/300x400?text=KAI+TO+REVIEW'" class="w-full md:w-64 h-96 object-cover rounded-xl shadow-2xl">
                 <div class="flex-1">
                     <h1 id="det-title" class="text-4xl font-bold mb-2 text-white">Tên truyện</h1>
                     <div class="flex space-x-3 mb-4 text-sm text-gray-400">
@@ -77,7 +78,7 @@
                 <div class="border border-purple-500/30 p-4 rounded-lg bg-purple-900/10">
                     <h3 class="font-bold text-purple-400 mb-3"><i class="fas fa-book"></i> THÊM BỘ TRUYỆN MỚI</h3>
                     <input type="text" id="add-title" placeholder="Tên truyện" class="w-full bg-gray-900 rounded p-2 mb-2">
-                    <input type="text" id="add-cover" placeholder="Link ảnh bìa (URL)" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <input type="text" id="add-cover" placeholder="Link ảnh bìa (Nên copy link có đuôi .jpg hoặc .png)" class="w-full bg-gray-900 rounded p-2 mb-2">
                     <input type="text" id="add-genre" placeholder="Thể loại (VD: Ngôn tình, Trọng sinh...)" class="w-full bg-gray-900 rounded p-2 mb-2">
                     <textarea id="add-desc" placeholder="Mô tả tóm tắt..." class="w-full bg-gray-900 rounded p-2 mb-2"></textarea>
                     <button onclick="addStory()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded w-full font-bold">TẠO TRUYỆN</button>
@@ -104,7 +105,7 @@
     <div id="audio-player-bar" class="fixed bottom-0 left-0 right-0 bg-glass shadow-2xl transform translate-y-full transition-transform duration-500 z-50">
         <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
             
-            <img id="player-cover" src="https://via.placeholder.com/50" class="w-14 h-14 rounded-lg object-cover shadow-lg hidden sm:block">
+            <img id="player-cover" src="https://via.placeholder.com/50" onerror="this.src='https://via.placeholder.com/50?text=KAI+TO'" class="w-14 h-14 rounded-lg object-cover shadow-lg hidden sm:block">
             
             <div class="flex-1">
                 <div class="flex justify-between items-end mb-1">
@@ -131,9 +132,8 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // ========= ĐÃ CẬP NHẬT API CHUẨN CỦA BẠN =========
+        // API Của KAI TỒ REVIEW
         const API_URL = 'https://script.google.com/macros/s/AKfycbwL9FxquI_DSl1h58yg3BKFqF9a5HqKiwiVHy2ZdA-37WfV4nLJt99iz4tNzNSNJCwq/exec';
-        // ===================================================
         
         let allStories = [];
         let currentEpisodes = [];
@@ -141,7 +141,6 @@
         const audio = document.getElementById('core-audio');
         const progressBar = document.getElementById('progress-bar');
         
-        // 1. CHUYỂN ĐỔI GIAO DIỆN (SPA)
         function navigate(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hide'));
             document.getElementById(`view-${viewId}`).classList.remove('hide');
@@ -150,7 +149,6 @@
             window.scrollTo(0, 0);
         }
 
-        // 2. TẢI DỮ LIỆU TỪ GOOGLE SHEETS
         async function loadHome() {
             try {
                 const res = await fetch(`${API_URL}?action=getStories`);
@@ -164,10 +162,11 @@
                 }
 
                 allStories.forEach(s => {
+                    // Thêm onerror cho ảnh bìa ngoài trang chủ
                     grid.innerHTML += `
                         <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg cursor-pointer hover-scale" onclick="openStory('${s.id}')">
                             <div class="relative">
-                                <img src="${s.cover}" class="w-full h-56 object-cover">
+                                <img src="${s.cover}" onerror="this.src='https://via.placeholder.com/300x400?text=KAI+TO'" class="w-full h-56 object-cover">
                                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2">
                                     <span class="text-xs bg-purple-600 text-white px-2 py-0.5 rounded">${s.status}</span>
                                 </div>
@@ -184,12 +183,11 @@
             }
         }
 
-        // 3. CHI TIẾT TRUYỆN & DANH SÁCH TẬP
         async function openStory(id) {
             navigate('detail');
             const story = allStories.find(s => s.id === id);
             document.getElementById('det-title').innerText = story.title;
-            document.getElementById('det-cover').src = story.cover || 'https://via.placeholder.com/300x400';
+            document.getElementById('det-cover').src = story.cover || 'https://via.placeholder.com/300x400?text=KAI+TO';
             document.getElementById('det-desc').innerText = story.desc;
             document.getElementById('det-genre').innerText = story.genre;
             document.getElementById('det-status').innerText = story.status;
@@ -215,25 +213,23 @@
             });
         }
 
-        // 4. TRÌNH PHÁT AUDIO CORE
         function playAudio(index, storyTitle = null, storyCover = null) {
             if (index < 0 || index >= currentEpisodes.length) return;
             currentPlayingIndex = index;
             const ep = currentEpisodes[index];
             
-            // Lấy Audio stream trực tiếp từ Google Drive
-            const audioUrl = `https://docs.google.com/uc?export=download&id=${ep.driveId}`;
+            // ĐÃ SỬA LỖI ĐƯỜNG LINK Ở ĐÂY (Thay docs bằng drive)
+            const audioUrl = `https://drive.google.com/uc?export=download&id=${ep.driveId}`;
             audio.src = audioUrl;
             audio.play();
 
-            // Hiện Player Bar
             document.getElementById('audio-player-bar').classList.remove('translate-y-full');
             document.getElementById('btn-play').innerHTML = '<i class="fas fa-pause-circle"></i>';
             document.getElementById('player-ep').innerText = ep.epName;
             
             if(storyTitle) {
                 document.getElementById('player-title').innerText = storyTitle;
-                document.getElementById('player-cover').src = storyCover || 'https://via.placeholder.com/50';
+                document.getElementById('player-cover').src = storyCover || 'https://via.placeholder.com/50?text=KAI+TO';
             }
         }
 
@@ -245,9 +241,8 @@
         function playNext() { playAudio(currentPlayingIndex + 1); }
         function playPrev() { playAudio(currentPlayingIndex - 1); }
         
-        audio.addEventListener('ended', playNext); // Tự động phát tập tiếp theo khi kết thúc
+        audio.addEventListener('ended', playNext); 
         
-        // Cập nhật thanh thời gian
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 progressBar.value = (audio.currentTime / audio.duration) * 100;
@@ -256,7 +251,6 @@
             }
         });
 
-        // Kéo thanh tiến trình
         progressBar.addEventListener('input', (e) => {
             if (audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration;
         });
@@ -267,7 +261,6 @@
             return `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
         }
 
-        // Chỉnh tốc độ phát
         let speeds = [1, 1.25, 1.5, 2, 0.75];
         let speedIdx = 0;
         function changeSpeed() {
@@ -276,7 +269,6 @@
             document.getElementById('btn-speed').innerText = speeds[speedIdx] + 'x';
         }
 
-        // 5. CHỨC NĂNG ADMIN
         function populateAdminSelect() {
             const sel = document.getElementById('upload-story-id');
             sel.innerHTML = '<option value="">-- Chọn Truyện --</option>';
@@ -289,7 +281,6 @@
             const cover = document.getElementById('add-cover').value;
             if(!pass || !title) return alert("Vui lòng điền đủ Tên truyện và Mật khẩu!");
             
-            // Hiện thông báo đang tạo...
             document.querySelector('#view-admin button').innerText = 'ĐANG TẠO...';
             
             fetch(API_URL, {
@@ -297,10 +288,9 @@
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: new URLSearchParams({action: 'addStory', password: pass, title: title, coverUrl: cover, desc: document.getElementById('add-desc').value, genre: document.getElementById('add-genre').value, status: 'Đang cập nhật'})
             }).then(r => r.json()).then(res => {
-                document.querySelector('#view-admin button').innerText = 'TẠO TRUYỆN'; // Reset nút
+                document.querySelector('#view-admin button').innerText = 'TẠO TRUYỆN';
                 if(res.status === 'success') { 
                     alert("✅ Thêm truyện thành công!"); 
-                    // Reset form
                     document.getElementById('add-title').value = '';
                     document.getElementById('add-cover').value = '';
                     document.getElementById('add-desc').value = '';
@@ -325,14 +315,13 @@
             
             if(!pass || !file || !storyId || !epName || !order) return alert("Vui lòng điền đủ tất cả các ô và chọn file!");
             
-            // Giới hạn Google Apps Script (khoảng ~50MB), khuyên dùng file MP3 < 40MB
             if(file.size > 40000000) return alert("File quá lớn! Hãy dùng file Audio dưới 40MB (Nên render MP3 bitrate 128kbps).");
 
             document.getElementById('upload-status').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải file lên Drive... Vui lòng không đóng trang này!';
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64 = e.target.result.split(',')[1]; // Chỉ lấy đoạn mã hóa, bỏ phần data:audio/mp3;base64,
+                const base64 = e.target.result.split(',')[1];
                 
                 fetch(API_URL, {
                     method: 'POST',
@@ -344,9 +333,8 @@
                 }).then(r => r.json()).then(res => {
                     if(res.status === 'success') {
                         document.getElementById('upload-status').innerHTML = '<span class="text-green-400">✅ Đã tải lên và lưu vào hệ thống thành công!</span>';
-                        // Reset form upload
                         document.getElementById('upload-ep-name').value = '';
-                        document.getElementById('upload-order').value = parseInt(order) + 1; // Tự động nhảy số thứ tự tiếp theo
+                        document.getElementById('upload-order').value = parseInt(order) + 1;
                         document.getElementById('upload-file').value = '';
                     } else {
                         document.getElementById('upload-status').innerHTML = '<span class="text-red-400">❌ Lỗi: ' + res.message + '</span>';
