@@ -3,63 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAI TỒ AUDIO - Premium 2.0</title>
+    <title>KAI TỒ AUDIO - Anime Premium</title>
     <meta name="description" content="Thư viện Audio Truyện chuyên nghiệp, nghe trực tuyến.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* ================= PREMIUM 2.0 COLOR PALETTE ================= */
+        /* ================= TÙY CHỈNH MÀU VÀ GIAO DIỆN ================= */
         :root {
-            --bg-dark: #070B19; /* Xanh đen đậm */
-            --bg-navy: #111827; /* Tím than */
-            --accent-glow: #38bdf8; /* Xanh phát sáng */
-            --accent-purple: #818cf8; /* Tím sáng */
-            --text-silver: #e2e8f0; /* Trắng bạc */
-            --glass-bg: rgba(17, 24, 39, 0.7);
-            --glass-border: rgba(56, 189, 248, 0.2);
+            --bg-dark: #070B19;
+            --accent-glow: #818cf8; 
+            --accent-purple: #c084fc; 
+            --text-silver: #e2e8f0; 
+            --glass-bg: rgba(10, 15, 30, 0.4); /* Trong suốt hơn để thấy rõ nền */
+            --glass-border: rgba(192, 132, 252, 0.2);
         }
         
         body {
-            background-color: var(--bg-dark);
             color: var(--text-silver);
             font-family: 'Segoe UI', system-ui, sans-serif;
             overflow-x: hidden;
             padding-bottom: 110px;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
         }
 
-        /* Glassmorphism Premium */
+        /* ẢNH NỀN TOÀN MÀN HÌNH */
+        .sky-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2;
+            
+            /* ========================================================
+               HÃY DÁN LINK ẢNH NỀN (LUFFY + MÈO) CỦA BẠN VÀO BÊN DƯỚI
+               ======================================================== */
+            background-image: url('https://files.catbox.moe/pikb3y.png'); 
+            
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Lớp phủ hơi mờ nhẹ để chữ trên web không bị chìm vào ảnh */
+        .sky-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: linear-gradient(to bottom, rgba(7, 11, 25, 0.2) 0%, rgba(7, 11, 25, 0.7) 100%);
+        }
+
+        /* Giao diện Kính (Glassmorphism) */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         
         .glass-nav {
-            background: rgba(7, 11, 25, 0.85);
-            backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(7, 11, 25, 0.5); /* Thanh menu trong suốt */
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .glass-card {
-            background: linear-gradient(145deg, rgba(31, 41, 55, 0.4), rgba(17, 24, 39, 0.8));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(17, 24, 39, 0.5); /* Thẻ truyện trong suốt */
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
         .glass-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(56, 189, 248, 0.15);
+            border-color: rgba(192, 132, 252, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 20px rgba(192, 132, 252, 0.3);
+            background: rgba(30, 41, 59, 0.7);
         }
 
         .text-gradient { 
-            background: linear-gradient(to right, #818cf8, #38bdf8); 
+            background: linear-gradient(to right, #e879f9, #818cf8); 
             -webkit-background-clip: text; 
             color: transparent; 
         }
@@ -68,38 +88,41 @@
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 10px; }
         
         input[type="range"] { accent-color: var(--accent-glow); height: 4px; }
         input[type="range"]::-webkit-slider-thumb { background: #fff; box-shadow: 0 0 10px var(--accent-glow); }
-        
         .cover-ratio { aspect-ratio: 2 / 3; object-fit: cover; }
     </style>
 </head>
 <body>
 
-    <!-- THANH ĐIỀU HƯỚNG PREMIUM -->
+    <!-- ẢNH NỀN VÀ LỚP PHỦ -->
+    <div class="sky-bg"></div>
+    <div class="sky-overlay"></div>
+
+    <!-- THANH MENU TRONG SUỐT -->
     <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
                     <i class="fas fa-play text-white text-lg ml-1"></i>
                 </div>
                 <h1 class="text-2xl font-black text-gradient uppercase tracking-widest hidden sm:block">KAI TỒ AUDIO</h1>
             </div>
             
-            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-300 tracking-wide">
-                <button onclick="navigate('home')" class="hover:text-sky-400 transition">Trang Chủ</button>
-                <button onclick="navigate('library')" class="hover:text-sky-400 transition"><i class="fas fa-bookmark mr-1"></i> Tủ Truyện</button>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-200 tracking-wide">
+                <button onclick="navigate('home')" class="hover:text-purple-400 transition"><i class="fas fa-home mr-1"></i> Trang Chủ</button>
+                <button onclick="navigate('library')" class="hover:text-purple-400 transition"><i class="fas fa-bookmark mr-1"></i> Tủ Truyện</button>
             </div>
 
             <div class="flex items-center space-x-3 sm:space-x-4">
                 <div class="relative">
-                    <input type="text" id="search-input" onkeyup="searchStories()" placeholder="Tìm kiếm truyện..." class="bg-gray-800/60 border border-gray-700 text-sm rounded-full py-2.5 px-4 pl-10 focus:outline-none focus:border-sky-500 text-white w-40 sm:w-64 transition-all shadow-inner">
+                    <input type="text" id="search-input" onkeyup="searchStories()" placeholder="Tìm kiếm truyện..." class="bg-gray-800/40 border border-gray-600 text-sm rounded-full py-2.5 px-4 pl-10 focus:outline-none focus:border-purple-500 text-white w-40 sm:w-64 transition-all shadow-inner backdrop-blur-md">
                     <i class="fas fa-search absolute left-4 top-3 text-gray-400"></i>
                 </div>
-                <button onclick="navigate('admin')" class="text-gray-400 hover:text-white transition bg-gray-800/60 p-2.5 rounded-full border border-gray-700 hover:border-sky-500" title="Khu vực Quản trị">
+                <button onclick="navigate('admin')" class="text-gray-300 hover:text-white transition bg-gray-800/40 p-2.5 rounded-full border border-gray-600 hover:border-purple-500 backdrop-blur-md" title="Khu vực Quản trị">
                     <i class="fas fa-user-shield"></i>
                 </button>
             </div>
@@ -108,33 +131,34 @@
 
     <main id="app-container" class="max-w-7xl mx-auto px-4 pt-24">
         
-        <!-- ==================== KHU VỰC KHÁCH: TRANG CHỦ ==================== -->
+        <!-- ==================== KHU VỰC KHÁCH: TRANG CHỦ (THU GỌN BANNER) ==================== -->
         <div id="view-home" class="view-section">
             
-            <div class="flex flex-wrap gap-3 mb-8" id="category-filters">
-                <button onclick="filterStories('all')" class="px-5 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-sky-600 text-white text-sm font-bold shadow-lg shadow-sky-500/20">Tất Cả</button>
-                <button onclick="filterStories('Ngôn tình')" class="px-5 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm">Ngôn Tình</button>
-                <button onclick="filterStories('Đô thị')" class="px-5 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm">Đô Thị</button>
-                <button onclick="filterStories('Hệ thống')" class="px-5 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm">Hệ Thống</button>
-                <button onclick="filterStories('Trọng sinh')" class="px-5 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm">Trọng Sinh</button>
+            <!-- Bộ lọc thể loại (Được bo viền trong suốt giống ảnh) -->
+            <div class="flex flex-wrap gap-3 mb-10" id="category-filters">
+                <button onclick="filterStories('all')" class="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold shadow-lg shadow-purple-500/30 border border-purple-500/50">Tất Cả</button>
+                <button onclick="filterStories('Ngôn tình')" class="px-5 py-2 rounded-full glass-card text-gray-200 hover:text-white text-sm">Ngôn Tình</button>
+                <button onclick="filterStories('Đô thị')" class="px-5 py-2 rounded-full glass-card text-gray-200 hover:text-white text-sm">Đô Thị</button>
+                <button onclick="filterStories('Hệ thống')" class="px-5 py-2 rounded-full glass-card text-gray-200 hover:text-white text-sm">Hệ Thống</button>
+                <button onclick="filterStories('Trọng sinh')" class="px-5 py-2 rounded-full glass-card text-gray-200 hover:text-white text-sm">Trọng Sinh</button>
             </div>
 
-            <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-3">
-                <h2 id="section-title" class="text-2xl font-bold text-white tracking-wide"><i class="fas fa-bolt text-sky-400 mr-2"></i>TRUYỆN MỚI CẬP NHẬT</h2>
+            <div class="flex justify-between items-end mb-6 border-b border-gray-700/50 pb-3">
+                <h2 id="section-title" class="text-2xl font-bold text-white tracking-wide drop-shadow-md"><i class="fas fa-bolt text-purple-400 mr-2"></i>TRUYỆN MỚI CẬP NHẬT</h2>
             </div>
             
             <div id="story-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-                <div class="text-center text-sky-400 w-full col-span-full py-10"><i class="fas fa-circle-notch fa-spin text-3xl mb-3"></i><br>Đang đồng bộ thư viện...</div>
+                <div class="text-center text-purple-400 w-full col-span-full py-10"><i class="fas fa-circle-notch fa-spin text-3xl mb-3"></i><br>Đang đồng bộ thư viện...</div>
             </div>
         </div>
 
         <!-- ==================== KHU VỰC KHÁCH: CHI TIẾT TRUYỆN ==================== -->
         <div id="view-detail" class="view-section hide">
-            <button onclick="navigate('home')" class="text-gray-400 hover:text-sky-400 mb-6 bg-gray-900/50 px-4 py-2 rounded-full transition border border-gray-800"><i class="fas fa-arrow-left mr-2"></i> Quay lại</button>
+            <button onclick="navigate('home')" class="text-gray-300 hover:text-purple-400 mb-6 bg-gray-900/40 backdrop-blur-md px-4 py-2 rounded-full transition border border-gray-700"><i class="fas fa-arrow-left mr-2"></i> Quay lại</button>
             
             <div class="glass-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row gap-8 mb-8 relative overflow-hidden">
                 <div class="relative w-full md:w-64 shrink-0 group">
-                    <img id="det-cover" src="" onerror="this.src='https://via.placeholder.com/300x450?text=KAI+TO'" class="w-full cover-ratio rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-gray-700">
+                    <img id="det-cover" src="" onerror="this.src='https://via.placeholder.com/300x450?text=KAI+TO'" class="w-full cover-ratio rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] border border-gray-600">
                     <button onclick="toggleFavoriteCurrent()" id="btn-fav" class="absolute top-3 right-3 w-10 h-10 bg-black/70 backdrop-blur rounded-full flex items-center justify-center text-gray-300 hover:text-rose-500 transition-colors shadow-lg text-xl border border-gray-700">
                         <i class="far fa-heart"></i>
                     </button>
@@ -142,154 +166,141 @@
 
                 <div class="flex-1 z-10">
                     <div class="flex gap-2 mb-4">
-                        <span id="det-status" class="bg-gradient-to-r from-sky-600 to-indigo-600 px-3 py-1 rounded text-xs font-bold text-white shadow-lg tracking-wider uppercase">Trạng thái</span>
-                        <span id="det-genre" class="bg-gray-800 border border-gray-700 px-3 py-1 rounded text-xs font-bold text-gray-300">Thể loại</span>
+                        <span id="det-status" class="bg-gradient-to-r from-purple-600 to-indigo-600 px-3 py-1 rounded text-xs font-bold text-white shadow-lg tracking-wider uppercase border border-purple-500/50">Trạng thái</span>
+                        <span id="det-genre" class="bg-gray-800/60 backdrop-blur border border-gray-600 px-3 py-1 rounded text-xs font-bold text-gray-200">Thể loại</span>
                     </div>
                     <h1 id="det-title" class="text-3xl sm:text-5xl font-black mb-6 text-white drop-shadow-lg tracking-tight">Tên truyện</h1>
                     
-                    <div class="bg-gray-900/40 p-5 rounded-xl border border-gray-800 mb-6">
-                        <h3 class="text-xs font-bold text-sky-400 mb-3 uppercase tracking-widest">Nội dung tóm tắt</h3>
-                        <p id="det-desc" class="text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-line text-justify">Mô tả...</p>
+                    <div class="bg-gray-900/30 backdrop-blur-md p-5 rounded-xl border border-gray-700/50 mb-6">
+                        <h3 class="text-xs font-bold text-purple-400 mb-3 uppercase tracking-widest drop-shadow-md">Nội dung tóm tắt</h3>
+                        <p id="det-desc" class="text-gray-200 text-sm sm:text-base leading-relaxed whitespace-pre-line text-justify drop-shadow-sm">Mô tả...</p>
                     </div>
                 </div>
             </div>
             
             <div class="glass-panel rounded-2xl p-6 sm:p-8">
-                <h3 class="text-xl font-bold mb-6 text-white flex justify-between items-center border-b border-gray-800 pb-3">
-                    <span class="tracking-wide"><i class="fas fa-headphones text-sky-500 mr-2"></i>DANH SÁCH TẬP</span>
+                <h3 class="text-xl font-bold mb-6 text-white flex justify-between items-center border-b border-gray-700/50 pb-3 drop-shadow-md">
+                    <span class="tracking-wide"><i class="fas fa-headphones text-purple-400 mr-2"></i>DANH SÁCH TẬP</span>
                 </h3>
                 <div id="ep-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto pr-2">
-                    <!-- Javascript nạp danh sách tập -->
                 </div>
             </div>
         </div>
 
         <!-- ==================== KHU VỰC KHÁCH: TỦ TRUYỆN ==================== -->
         <div id="view-library" class="view-section hide">
-            <h2 class="text-3xl font-black text-white mb-8 border-l-4 border-sky-500 pl-4 tracking-wide">Tủ Truyện Cá Nhân</h2>
+            <h2 class="text-3xl font-black text-white mb-8 border-l-4 border-purple-500 pl-4 tracking-wide drop-shadow-lg">Tủ Truyện Cá Nhân</h2>
             
-            <h3 class="text-lg font-bold text-rose-400 mb-4"><i class="fas fa-heart mr-2"></i>Truyện Yêu Thích</h3>
+            <h3 class="text-lg font-bold text-rose-400 mb-4 drop-shadow-md"><i class="fas fa-heart mr-2"></i>Truyện Yêu Thích</h3>
             <div id="fav-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 mb-12"></div>
 
-            <div class="flex justify-between items-end mb-4 border-b border-gray-800 pb-2">
-                <h3 class="text-lg font-bold text-sky-400"><i class="fas fa-history mr-2"></i>Lịch Sử Nghe Gần Đây</h3>
-                <button onclick="clearHistory()" class="text-xs font-bold text-gray-500 hover:text-rose-500 uppercase tracking-wider transition">Xóa lịch sử</button>
+            <div class="flex justify-between items-end mb-4 border-b border-gray-700/50 pb-2">
+                <h3 class="text-lg font-bold text-purple-400 drop-shadow-md"><i class="fas fa-history mr-2"></i>Lịch Sử Nghe Gần Đây</h3>
+                <button onclick="clearHistory()" class="text-xs font-bold text-gray-400 hover:text-rose-500 uppercase tracking-wider transition">Xóa lịch sử</button>
             </div>
             <div id="history-list" class="space-y-3"></div>
         </div>
 
-        <!-- ==================== KHU VỰC ADMIN: DASHBOARD BẢO MẬT ==================== -->
+        <!-- ==================== KHU VỰC ADMIN ==================== -->
         <div id="view-admin" class="view-section hide">
             <div class="max-w-4xl mx-auto">
-                
-                <!-- Cổng Đăng Nhập Admin -->
-                <div id="admin-login-gate" class="glass-panel p-8 rounded-2xl max-w-md mx-auto text-center shadow-2xl mt-10 border border-sky-500/30">
-                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-sky-500 rounded-full mx-auto flex items-center justify-center mb-4 shadow-lg shadow-sky-500/20">
+                <div id="admin-login-gate" class="glass-panel p-8 rounded-2xl max-w-md mx-auto text-center shadow-2xl mt-10 border border-purple-500/30">
+                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4 shadow-lg shadow-purple-500/20">
                         <i class="fas fa-lock text-white text-2xl"></i>
                     </div>
-                    <h2 class="text-2xl font-black text-white mb-2 tracking-wide">CỔNG QUẢN TRỊ VIÊN</h2>
-                    <p class="text-gray-400 text-sm mb-6">Khu vực cấm khách hàng truy cập.</p>
-                    <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu quản trị..." class="w-full bg-gray-900/80 border border-gray-700 rounded-xl p-3 text-center text-white focus:border-sky-500 outline-none transition mb-4 shadow-inner">
-                    <button onclick="loginAdmin()" class="w-full bg-gradient-to-r from-indigo-600 to-sky-600 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-sky-500/40 transition-all uppercase tracking-widest">Đăng Nhập</button>
+                    <h2 class="text-2xl font-black text-white mb-2 tracking-wide drop-shadow-md">CỔNG QUẢN TRỊ VIÊN</h2>
+                    <p class="text-gray-300 text-sm mb-6 drop-shadow-sm">Khu vực cấm khách hàng truy cập.</p>
+                    <input type="password" id="admin-pass-input" placeholder="Nhập mật khẩu quản trị..." class="w-full bg-gray-900/60 backdrop-blur border border-gray-600 rounded-xl p-3 text-center text-white focus:border-purple-500 outline-none transition mb-4 shadow-inner">
+                    <button onclick="loginAdmin()" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-purple-500/40 transition-all uppercase tracking-widest border border-purple-500/50">Đăng Nhập</button>
                 </div>
 
-                <!-- Bảng Điều Khiển Admin (Ẩn cho đến khi có Pass) -->
                 <div id="admin-dashboard" class="hide space-y-6">
-                    <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
-                        <h2 class="text-2xl font-black text-gradient uppercase tracking-widest"><i class="fas fa-user-shield mr-2"></i>Dashboard Quản Trị</h2>
-                        <button onclick="logoutAdmin()" class="text-sm bg-gray-800 hover:bg-rose-600 text-white px-4 py-2 rounded-lg transition"><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</button>
+                    <div class="flex justify-between items-center mb-6 border-b border-gray-700/50 pb-4">
+                        <h2 class="text-2xl font-black text-gradient uppercase tracking-widest drop-shadow-md"><i class="fas fa-user-shield mr-2"></i>Dashboard Quản Trị</h2>
+                        <button onclick="logoutAdmin()" class="text-sm bg-gray-800/80 backdrop-blur hover:bg-rose-600 text-white px-4 py-2 rounded-lg transition border border-gray-600"><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</button>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Module 1: Thêm Truyện -->
                         <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-indigo-500">
-                            <h3 class="font-bold text-white mb-4 text-lg"><i class="fas fa-folder-plus text-indigo-400 mr-2"></i>TẠO TRUYỆN MỚI</h3>
-                            <input type="text" id="add-title" placeholder="Tên truyện..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white mb-3">
-                            <input type="text" id="add-genre" placeholder="Thể loại..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white mb-3">
-                            <input type="text" id="add-cover" placeholder="Link ảnh bìa (.jpg / .png)..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white mb-3">
-                            <textarea id="add-desc" placeholder="Mô tả tóm tắt..." rows="3" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white mb-4"></textarea>
-                            <button onclick="addStory()" id="btn-add-story" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-3 rounded-lg w-full font-bold shadow-lg transition">LƯU TRUYỆN MỚI</button>
+                            <h3 class="font-bold text-white mb-4 text-lg drop-shadow-md"><i class="fas fa-folder-plus text-indigo-400 mr-2"></i>TẠO TRUYỆN MỚI</h3>
+                            <input type="text" id="add-title" placeholder="Tên truyện..." class="w-full bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white mb-3">
+                            <input type="text" id="add-genre" placeholder="Thể loại..." class="w-full bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white mb-3">
+                            <input type="text" id="add-cover" placeholder="Link ảnh bìa (.jpg / .png)..." class="w-full bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white mb-3">
+                            <textarea id="add-desc" placeholder="Mô tả tóm tắt..." rows="3" class="w-full bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white mb-4"></textarea>
+                            <button onclick="addStory()" id="btn-add-story" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-3 rounded-lg w-full font-bold shadow-lg transition border border-indigo-400/50">LƯU TRUYỆN MỚI</button>
                         </div>
 
-                        <!-- Module 2: Đăng Tập (Link Trực Tiếp) -->
-                        <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-sky-500">
-                            <h3 class="font-bold text-white mb-4 text-lg"><i class="fas fa-cloud-upload-alt text-sky-400 mr-2"></i>ĐĂNG TẬP AUDIO (CATBOX)</h3>
-                            <select id="upload-story-id" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white mb-3 appearance-none">
+                        <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-purple-500">
+                            <h3 class="font-bold text-white mb-4 text-lg drop-shadow-md"><i class="fas fa-cloud-upload-alt text-purple-400 mr-2"></i>ĐĂNG TẬP AUDIO (CATBOX)</h3>
+                            <select id="upload-story-id" class="w-full bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white mb-3 appearance-none">
                                 <option value="">-- Chọn bộ truyện --</option>
                             </select>
                             <div class="flex gap-3 mb-3">
-                                <input type="text" id="upload-ep-name" placeholder="Tên tập (Tập 1)..." class="w-2/3 bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white">
-                                <input type="number" id="upload-order" placeholder="STT..." class="w-1/3 bg-gray-900/80 border border-gray-700 rounded-lg p-3 text-white">
+                                <input type="text" id="upload-ep-name" placeholder="Tên tập (Tập 1)..." class="w-2/3 bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white">
+                                <input type="number" id="upload-order" placeholder="STT..." class="w-1/3 bg-gray-900/60 border border-gray-600 rounded-lg p-3 text-white">
                             </div>
-                            <input type="text" id="upload-audio-url" placeholder="Dán link MP3 từ Catbox.moe..." class="w-full bg-gray-900/80 border border-sky-500/50 rounded-lg p-3 text-white mb-4">
-                            <button onclick="addEpisodeDirect()" id="btn-upload" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-3 rounded-lg w-full font-bold shadow-lg transition">THÊM TẬP AUDIO</button>
+                            <input type="text" id="upload-audio-url" placeholder="Dán link MP3 từ Catbox.moe..." class="w-full bg-gray-900/60 border border-purple-400/50 rounded-lg p-3 text-white mb-4">
+                            <button onclick="addEpisodeDirect()" id="btn-upload" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-3 rounded-lg w-full font-bold shadow-lg transition border border-purple-400/50">THÊM TẬP AUDIO</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- ==================== PREMIUM AUDIO PLAYER (CỐ ĐỊNH BOTTOM) ==================== -->
-    <div id="audio-player-bar" class="fixed bottom-0 left-0 w-full glass-panel border-t border-gray-800 shadow-[0_-10px_50px_rgba(0,0,0,0.8)] transform translate-y-full transition-transform duration-500 z-50">
+    <!-- ==================== PREMIUM AUDIO PLAYER (TRONG SUỐT) ==================== -->
+    <div id="audio-player-bar" class="fixed bottom-0 left-0 w-full glass-panel border-t border-gray-600/50 shadow-[0_-10px_50px_rgba(0,0,0,0.8)] transform translate-y-full transition-transform duration-500 z-50">
         
-        <!-- Thanh tiến trình Audio cực mượt -->
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-gray-900 cursor-pointer group" id="progress-container">
-            <div id="progress-fill" class="h-full bg-gradient-to-r from-indigo-500 to-sky-400 w-0 relative">
-                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_10px_#38bdf8] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-gray-800/80 cursor-pointer group" id="progress-container">
+            <div id="progress-fill" class="h-full bg-gradient-to-r from-indigo-400 to-purple-400 w-0 relative shadow-[0_0_10px_#c084fc]">
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-[0_0_12px_#c084fc] opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-4 mt-1">
             
             <div class="flex items-center gap-4 w-full sm:w-1/3">
-                <img id="player-cover" src="" onerror="this.src='https://via.placeholder.com/50?text=KAI+TO'" class="w-14 h-14 rounded-lg object-cover shadow-lg border border-gray-700">
+                <img id="player-cover" src="" onerror="this.src='https://via.placeholder.com/50?text=KAI+TO'" class="w-14 h-14 rounded-lg object-cover shadow-[0_4px_15px_rgba(0,0,0,0.6)] border border-gray-600/50">
                 <div class="overflow-hidden">
-                    <div id="player-title" class="font-bold text-white text-sm whitespace-nowrap overflow-hidden text-ellipsis tracking-wide">Đang tải...</div>
-                    <div id="player-ep" class="text-xs text-sky-400 font-semibold mt-1">Tập ?</div>
+                    <div id="player-title" class="font-bold text-white text-sm whitespace-nowrap overflow-hidden text-ellipsis tracking-wide drop-shadow-md">Đang tải...</div>
+                    <div id="player-ep" class="text-xs text-purple-300 font-semibold mt-1 drop-shadow-sm">Tập ?</div>
                 </div>
             </div>
 
-            <!-- Bộ điều khiển trung tâm -->
             <div class="flex flex-col items-center w-full sm:w-1/3">
                 <div class="flex items-center justify-center space-x-6 sm:space-x-8">
-                    <!-- Đổi nút tua 10s thành 15s theo yêu cầu Premium -->
-                    <button onclick="skipAudio(-15)" class="text-gray-400 hover:text-white transition hidden sm:block" title="Lùi 15s"><i class="fas fa-undo-alt text-lg"></i> <span class="text-[10px] block -mt-1 font-mono">15s</span></button>
-                    <button onclick="playPrev()" class="text-gray-300 hover:text-sky-400 text-xl transition"><i class="fas fa-step-backward"></i></button>
+                    <button onclick="skipAudio(-15)" class="text-gray-300 hover:text-white transition hidden sm:block drop-shadow-md" title="Lùi 15s"><i class="fas fa-undo-alt text-lg"></i> <span class="text-[10px] block -mt-1 font-mono">15s</span></button>
+                    <button onclick="playPrev()" class="text-gray-200 hover:text-purple-400 text-xl transition drop-shadow-md"><i class="fas fa-step-backward"></i></button>
                     
-                    <button onclick="togglePlay()" id="btn-play" class="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-indigo-500 to-sky-500 text-white rounded-full hover:scale-105 transition shadow-[0_0_20px_rgba(56,189,248,0.4)]">
+                    <button onclick="togglePlay()" id="btn-play" class="w-14 h-14 flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full hover:scale-105 transition shadow-[0_0_20px_rgba(192,132,252,0.4)] border border-purple-400/50">
                         <i class="fas fa-play text-2xl ml-1"></i>
                     </button>
                     
-                    <button onclick="playNext()" class="text-gray-300 hover:text-sky-400 text-xl transition"><i class="fas fa-step-forward"></i></button>
-                    <button onclick="skipAudio(15)" class="text-gray-400 hover:text-white transition hidden sm:block" title="Tiến 15s"><i class="fas fa-redo-alt text-lg"></i> <span class="text-[10px] block -mt-1 font-mono">15s</span></button>
+                    <button onclick="playNext()" class="text-gray-200 hover:text-purple-400 text-xl transition drop-shadow-md"><i class="fas fa-step-forward"></i></button>
+                    <button onclick="skipAudio(15)" class="text-gray-300 hover:text-white transition hidden sm:block drop-shadow-md" title="Tiến 15s"><i class="fas fa-redo-alt text-lg"></i> <span class="text-[10px] block -mt-1 font-mono">15s</span></button>
                 </div>
                 <div class="flex justify-between w-full max-w-sm mt-2 px-4 sm:px-0">
-                    <span id="time-current" class="text-xs text-gray-400 font-mono tracking-wider">00:00</span>
-                    <span id="time-total" class="text-xs text-gray-400 font-mono tracking-wider">00:00</span>
+                    <span id="time-current" class="text-xs text-gray-300 font-mono tracking-wider drop-shadow-md">00:00</span>
+                    <span id="time-total" class="text-xs text-gray-300 font-mono tracking-wider drop-shadow-md">00:00</span>
                 </div>
             </div>
 
-            <!-- Bảng điều khiển phụ -->
             <div class="hidden sm:flex items-center justify-end w-1/3 space-x-4">
-                <button onclick="changeSpeed()" id="btn-speed" class="text-xs font-bold text-gray-300 hover:text-sky-400 border border-gray-600 rounded px-2 py-1 transition" title="Tốc độ phát">1.0x</button>
-                <i class="fas fa-volume-up text-gray-400 text-sm ml-2"></i>
-                <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1" class="w-24">
+                <button onclick="changeSpeed()" id="btn-speed" class="text-xs font-bold text-gray-200 hover:text-purple-400 border border-gray-500 rounded px-2 py-1 transition backdrop-blur-sm" title="Tốc độ phát">1.0x</button>
+                <i class="fas fa-volume-up text-gray-300 text-sm ml-2 drop-shadow-md"></i>
+                <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1" class="w-24 drop-shadow-md">
             </div>
             
-            <!-- Trình phát HTML ẩn -->
             <audio id="core-audio" class="hidden"></audio>
         </div>
     </div>
 
     <!-- ==================== JAVASCRIPT ==================== -->
     <script>
-        // LINK APP SCRIPT CỦA BẠN (GIỮ NGUYÊN)
         const API_URL = 'https://script.google.com/macros/s/AKfycbwL9FxquI_DSl1h58yg3BKFqF9a5HqKiwiVHy2ZdA-37WfV4nLJt99iz4tNzNSNJCwq/exec';
         
         let allStories = [], currentEpisodes = [], currentStoryData = null, currentPlayingIndex = -1;
-        let adminPassTemp = ""; // Lưu tạm pass admin khi đăng nhập thành công
+        let adminPassTemp = ""; 
         
         const audio = document.getElementById('core-audio');
         const progressFill = document.getElementById('progress-fill');
@@ -297,29 +308,24 @@
         let favorites = JSON.parse(localStorage.getItem('kaito_favorites')) || [];
         let listenHistory = JSON.parse(localStorage.getItem('kaito_history')) || [];
 
-        // HÀM CHUYỂN TRANG
         function navigate(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hide'));
             document.getElementById(`view-${viewId}`).classList.remove('hide');
             
-            if(viewId === 'home') { loadHome(); document.getElementById('section-title').innerHTML = '<i class="fas fa-bolt text-sky-400 mr-2"></i>TRUYỆN MỚI CẬP NHẬT'; }
+            if(viewId === 'home') { loadHome(); document.getElementById('section-title').innerHTML = '<i class="fas fa-bolt text-purple-400 mr-2"></i>TRUYỆN MỚI CẬP NHẬT'; }
             if(viewId === 'admin') {
                 if(adminPassTemp === "") {
                     document.getElementById('admin-login-gate').classList.remove('hide');
                     document.getElementById('admin-dashboard').classList.add('hide');
-                } else {
-                    populateAdminSelect();
-                }
+                } else populateAdminSelect();
             }
             if(viewId === 'library') renderLibrary();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // HỆ THỐNG ĐĂNG NHẬP ADMIN GIẢ LẬP GIAO DIỆN
         function loginAdmin() {
             const pass = document.getElementById('admin-pass-input').value;
             if(pass === "") { alert("Vui lòng nhập mật khẩu!"); return; }
-            // Lưu tạm trên frontend, sẽ được check thật sự ở backend khi Gửi API
             adminPassTemp = pass;
             document.getElementById('admin-login-gate').classList.add('hide');
             document.getElementById('admin-dashboard').classList.remove('hide');
@@ -338,11 +344,10 @@
                 try {
                     const res = await fetch(`${API_URL}?action=getStories`);
                     allStories = await res.json();
-                } catch(e) { document.getElementById('story-grid').innerHTML = '<p class="text-red-500 col-span-full">Lỗi kết nối máy chủ!</p>'; return; }
+                } catch(e) { document.getElementById('story-grid').innerHTML = '<p class="text-red-400 col-span-full font-bold">Lỗi kết nối máy chủ!</p>'; return; }
             }
             renderGrid(allStories);
             
-            // Resume Audio (Mini Player logic)
             const lastPos = JSON.parse(localStorage.getItem('kaito_last_play'));
             if(lastPos && audio.src === "") {
                 document.getElementById('audio-player-bar').classList.remove('translate-y-full');
@@ -355,7 +360,7 @@
         function renderGrid(storiesArray) {
             const grid = document.getElementById('story-grid');
             grid.innerHTML = '';
-            if (storiesArray.length === 0) { grid.innerHTML = '<p class="text-gray-400 col-span-full text-center py-10">Chưa có truyện nào.</p>'; return; }
+            if (storiesArray.length === 0) { grid.innerHTML = '<p class="text-gray-300 col-span-full text-center py-10">Chưa có truyện nào.</p>'; return; }
 
             storiesArray.forEach(s => {
                 const isFav = favorites.includes(s.id);
@@ -364,15 +369,15 @@
                     <div class="glass-card rounded-2xl overflow-hidden cursor-pointer group" onclick="openStory('${s.id}')">
                         <div class="relative overflow-hidden">
                             <img src="${s.cover}" onerror="this.src='https://via.placeholder.com/300x450?text=KAI+TO'" class="w-full cover-ratio group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-bg-dark via-transparent to-transparent opacity-90"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#070B19] via-transparent to-transparent opacity-90"></div>
                             <div class="absolute top-2 right-2">${favIcon}</div>
                             <div class="absolute bottom-2 left-2 right-2">
-                                <span class="text-[10px] bg-sky-600/90 text-white px-2 py-1 rounded shadow-lg tracking-wider uppercase font-bold">${s.status}</span>
+                                <span class="text-[10px] bg-purple-600/90 text-white px-2 py-1 rounded shadow-lg tracking-wider uppercase font-bold border border-purple-400/50">${s.status}</span>
                             </div>
                         </div>
                         <div class="p-4">
-                            <h3 class="font-bold text-white text-sm line-clamp-2 leading-snug group-hover:text-sky-400 transition-colors">${s.title}</h3>
-                            <p class="text-[11px] text-gray-400 mt-2 font-medium tracking-wide text-ellipsis overflow-hidden whitespace-nowrap"><i class="fas fa-bookmark mr-1 text-indigo-400"></i> ${s.genre}</p>
+                            <h3 class="font-bold text-white text-sm line-clamp-2 leading-snug group-hover:text-purple-300 transition-colors drop-shadow-md">${s.title}</h3>
+                            <p class="text-[11px] text-gray-300 mt-2 font-medium tracking-wide text-ellipsis overflow-hidden whitespace-nowrap drop-shadow-md"><i class="fas fa-bookmark mr-1 text-indigo-400"></i> ${s.genre}</p>
                         </div>
                     </div>
                 `;
@@ -381,23 +386,23 @@
 
         function searchStories() {
             const keyword = document.getElementById('search-input').value.toLowerCase();
-            document.getElementById('section-title').innerHTML = `<i class="fas fa-search text-sky-500 mr-2"></i>Kết quả: "${keyword}"`;
+            document.getElementById('section-title').innerHTML = `<i class="fas fa-search text-purple-400 mr-2"></i>Kết quả: "${keyword}"`;
             renderGrid(allStories.filter(s => s.title.toLowerCase().includes(keyword)));
         }
 
         function filterStories(genre) {
             navigate('home');
             document.querySelectorAll('#category-filters button').forEach(b => {
-                b.className = "px-5 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm transition";
+                b.className = "px-5 py-2 rounded-full glass-card text-gray-200 hover:text-white text-sm transition border border-transparent";
                 if(b.innerText.toLowerCase() === genre.toLowerCase() || (genre === 'all' && b.innerText === 'Tất Cả')) {
-                    b.className = "px-5 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-sky-600 text-white text-sm font-bold shadow-lg shadow-sky-500/20";
+                    b.className = "px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm font-bold shadow-lg shadow-purple-500/30 border border-purple-400/50";
                 }
             });
             if (genre === 'all') {
-                document.getElementById('section-title').innerHTML = '<i class="fas fa-bolt text-sky-400 mr-2"></i>TẤT CẢ TRUYỆN';
+                document.getElementById('section-title').innerHTML = '<i class="fas fa-bolt text-purple-400 mr-2"></i>TẤT CẢ TRUYỆN';
                 renderGrid(allStories);
             } else {
-                document.getElementById('section-title').innerHTML = `<i class="fas fa-list text-sky-500 mr-2"></i>Thể loại: ${genre}`;
+                document.getElementById('section-title').innerHTML = `<i class="fas fa-list text-purple-400 mr-2"></i>Thể loại: ${genre}`;
                 renderGrid(allStories.filter(s => s.genre.toLowerCase().includes(genre.toLowerCase())));
             }
         }
@@ -416,20 +421,20 @@
             else { btn.innerHTML = '<i class="far fa-heart"></i>'; btn.classList.replace('text-rose-500', 'text-gray-300'); }
 
             const epListEl = document.getElementById('ep-list');
-            epListEl.innerHTML = '<div class="col-span-full text-center text-sky-400 py-6"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><br>Đang tải tập...</div>';
+            epListEl.innerHTML = '<div class="col-span-full text-center text-purple-400 py-6"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><br>Đang tải tập...</div>';
 
             const res = await fetch(`${API_URL}?action=getEpisodes&storyId=${id}`);
             currentEpisodes = await res.json();
             
             epListEl.innerHTML = '';
-            if(currentEpisodes.length === 0) epListEl.innerHTML = '<p class="text-gray-500 col-span-full">Chưa có tập nào.</p>';
+            if(currentEpisodes.length === 0) epListEl.innerHTML = '<p class="text-gray-400 col-span-full drop-shadow-md">Chưa có tập nào.</p>';
             currentEpisodes.forEach((ep, index) => {
                 epListEl.innerHTML += `
-                    <div class="glass-card p-3 rounded-xl flex items-center group cursor-pointer hover:border-sky-500" onclick="playAudio(${index})">
-                        <div class="w-10 h-10 shrink-0 rounded-full bg-gray-800 border border-gray-600 flex justify-center items-center mr-3 group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-sky-500 transition-colors shadow-lg">
-                            <i class="fas fa-play text-gray-400 group-hover:text-white text-sm ml-1"></i>
+                    <div class="glass-card p-3 rounded-xl flex items-center group cursor-pointer hover:bg-purple-900/40 border border-gray-600/50 hover:border-purple-500/50" onclick="playAudio(${index})">
+                        <div class="w-10 h-10 shrink-0 rounded-full bg-gray-800/80 border border-gray-500 flex justify-center items-center mr-3 group-hover:bg-gradient-to-r group-hover:from-indigo-500 group-hover:to-purple-500 transition-colors shadow-lg">
+                            <i class="fas fa-play text-gray-300 group-hover:text-white text-sm ml-1"></i>
                         </div>
-                        <span class="font-bold text-gray-300 group-hover:text-white truncate">${ep.epName}</span>
+                        <span class="font-bold text-gray-200 group-hover:text-white truncate drop-shadow-md">${ep.epName}</span>
                     </div>
                 `;
             });
@@ -447,24 +452,24 @@
             const favGrid = document.getElementById('fav-grid');
             const histList = document.getElementById('history-list');
             const favStories = allStories.filter(s => favorites.includes(s.id));
-            if(favStories.length === 0) favGrid.innerHTML = '<p class="text-gray-500 col-span-full">Bạn chưa có truyện yêu thích.</p>';
+            if(favStories.length === 0) favGrid.innerHTML = '<p class="text-gray-400 col-span-full drop-shadow-md">Bạn chưa có truyện yêu thích.</p>';
             else {
                 favGrid.innerHTML = '';
                 favStories.forEach(s => {
-                    favGrid.innerHTML += `<div class="glass-card rounded-2xl overflow-hidden cursor-pointer group" onclick="openStory('${s.id}')"><img src="${s.cover}" class="w-full cover-ratio group-hover:scale-105 transition"><div class="p-3"><h3 class="font-bold text-white text-xs line-clamp-1">${s.title}</h3></div></div>`;
+                    favGrid.innerHTML += `<div class="glass-card rounded-2xl overflow-hidden cursor-pointer group" onclick="openStory('${s.id}')"><img src="${s.cover}" class="w-full cover-ratio group-hover:scale-105 transition"><div class="p-3"><h3 class="font-bold text-white text-xs line-clamp-1 drop-shadow-md">${s.title}</h3></div></div>`;
                 });
             }
-            if(listenHistory.length === 0) histList.innerHTML = '<p class="text-gray-500">Chưa có lịch sử nghe.</p>';
+            if(listenHistory.length === 0) histList.innerHTML = '<p class="text-gray-400 drop-shadow-md">Chưa có lịch sử nghe.</p>';
             else {
                 histList.innerHTML = '';
                 listenHistory.slice().reverse().forEach(h => {
                     histList.innerHTML += `
-                        <div class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-sky-500 transition" onclick="openStory('${h.sId}')">
+                        <div class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer hover:border-purple-500/50 transition border border-gray-600/50" onclick="openStory('${h.sId}')">
                             <div class="flex items-center gap-4">
-                                <img src="${h.sCover}" class="w-14 h-14 rounded object-cover shadow-lg border border-gray-700">
-                                <div><h4 class="text-white font-bold text-sm mb-1">${h.sTitle}</h4><p class="text-sky-400 text-xs tracking-wider">${h.epName}</p></div>
+                                <img src="${h.sCover}" class="w-14 h-14 rounded object-cover shadow-lg border border-gray-600">
+                                <div><h4 class="text-white font-bold text-sm mb-1 drop-shadow-md">${h.sTitle}</h4><p class="text-purple-300 text-xs tracking-wider drop-shadow-sm">${h.epName}</p></div>
                             </div>
-                            <i class="fas fa-chevron-right text-gray-500 mr-2"></i>
+                            <i class="fas fa-chevron-right text-gray-400 mr-2 drop-shadow-md"></i>
                         </div>
                     `;
                 });
@@ -508,7 +513,7 @@
         }
         function playNext() { playAudio(currentPlayingIndex + 1, true); }
         function playPrev() { playAudio(currentPlayingIndex - 1, true); }
-        function skipAudio(seconds) { audio.currentTime += seconds; } // Nút 15s
+        function skipAudio(seconds) { audio.currentTime += seconds; } 
         
         audio.addEventListener('ended', playNext); 
         audio.addEventListener('timeupdate', () => {
