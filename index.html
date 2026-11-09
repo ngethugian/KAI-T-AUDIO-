@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAI TỒ AUDIO STUDIO - GITHUB VERSION</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0b0f19; color: #e2e8f0; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(147, 51, 234, 0.3); backdrop-filter: blur(10px); }
+        .gradient-text { background: linear-gradient(90deg, #9333ea, #3b82f6); -webkit-background-clip: text; color: transparent; }
+        .btn-primary { background: linear-gradient(90deg, #9333ea, #3b82f6); transition: all 0.3s ease; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4); }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden font-sans">
+    
+    <!-- Sidebar Menu -->
+    <aside class="w-64 glass-panel flex flex-col h-full z-10 border-r border-purple-900/50">
+        <div class="p-6 text-center border-b border-purple-900/50">
+            <h1 class="text-2xl font-black gradient-text tracking-wider">KAI TỒ</h1>
+            <p class="text-xs text-blue-400 font-semibold uppercase tracking-widest mt-1">Audio Studio (No API)</p>
+        </div>
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            <button onclick="newProject()" class="w-full flex items-center p-3 rounded-lg bg-purple-600/20 text-purple-300 hover:bg-purple-600/40 transition">
+                <i class="fas fa-plus mr-3"></i> Dự án mới
+            </button>
+        </nav>
+        <div class="p-4 text-xs text-gray-500 text-center border-t border-purple-900/50">
+            Chạy 100% trên Trình duyệt<br>Bản triển khai GitHub
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <div class="flex-1 overflow-y-auto p-8 flex gap-6">
+            
+            <!-- Cột trái: Nhập liệu -->
+            <div class="w-2/3 flex flex-col space-y-4">
+                <div class="glass-panel rounded-xl p-4 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="font-bold text-blue-400"><i class="fas fa-keyboard mr-2"></i>Nội dung truyện</h2>
+                    </div>
+                    <textarea id="story-text" class="w-full flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-4 text-gray-200 focus:outline-none focus:border-purple-500 resize-none leading-relaxed" placeholder="Dán nội dung truyện vào đây. Lưu ý: Xử lý trực tiếp trên web nên cắt thành từng chương/đoạn (dưới 3000 chữ/lần) để AI chạy mượt nhất..."></textarea>
+                </div>
+            </div>
+
+            <!-- Cột phải: Cài đặt & Tạo Audio -->
+            <div class="w-1/3 flex flex-col space-y-6">
+                <!-- Cài đặt giọng đọc -->
+                <div class="glass-panel rounded-xl p-6">
+                    <h2 class="font-bold text-purple-400 mb-4"><i class="fas fa-sliders-h mr-2"></i>Cài đặt AI Voice</h2>
+                    
+                    <label class="block text-sm mb-1 text-gray-400">Chọn giọng đọc</label>
+                    <select id="voice-select" class="w-full bg-gray-900 border border-gray-700 rounded p-2 mb-4 outline-none">
+                        <option value="vi-VN-HoaiMyNeural">Hoài My (Nữ, Truyền cảm)</option>
+                        <option value="vi-VN-NamMinhNeural">Nam Minh (Nam, Trầm ấm)</option>
+                    </select>
+
+                    <label class="block text-sm mb-1 text-gray-400">Tốc độ đọc</label>
+                    <input type="range" id="voice-speed" min="-50" max="50" value="0" class="w-full mb-6">
+                    
+                    <button id="btn-generate" onclick="generateAudio()" class="w-full btn-primary text-white font-bold py-3 px-4 rounded-lg shadow-lg flex justify-center items-center">
+                        <i class="fas fa-magic mr-2"></i> SẢN XUẤT AUDIO
+                    </button>
+                    
+                    <div id="loading" class="hidden text-center mt-3 text-sm text-purple-400 font-bold">
+                        <i class="fas fa-circle-notch fa-spin mr-1"></i> Đang kết nối AI và tạo Audio...
+                    </div>
+                </div>
+
+                <!-- Trình phát & Tải xuống -->
+                <div id="player-section" class="glass-panel rounded-xl p-6 hidden">
+                    <h2 class="font-bold text-green-400 mb-4"><i class="fas fa-check-circle mr-2"></i>Thành công!</h2>
+                    
+                    <audio id="audio-player" controls class="w-full mb-6 rounded"></audio>
+
+                    <div class="space-y-3">
+                        <a id="btn-dl-mp3" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded transition flex justify-between px-4 cursor-pointer text-white">
+                            <span><i class="fas fa-file-audio mr-2"></i> Tải Audio (MP3)</span><i class="fas fa-download mt-1"></i>
+                        </a>
+                        <a id="btn-dl-srt" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded transition flex justify-between px-4 cursor-pointer text-white">
+                            <span><i class="fas fa-closed-captioning mr-2"></i> Tải Phụ đề (SRT)</span><i class="fas fa-download mt-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function newProject() {
+            document.getElementById('story-text').value = '';
+            document.getElementById('player-section').classList.add('hidden');
+        }
+
+        // Hàm tạo ID ngẫu nhiên cho WebSocket
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Chuyển đổi định dạng thời gian cho SRT
+        function formatSRTTime(ticks) {
+            const msTotal = Math.floor(ticks / 10000);
+            const ms = msTotal % 1000;
+            const sTotal = Math.floor(msTotal / 1000);
+            const s = sTotal % 60;
+            const mTotal = Math.floor(sTotal / 60);
+            const m = mTotal % 60;
+            const h = Math.floor(mTotal / 60);
+            return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')},${ms.toString().padStart(3,'0')}`;
+        }
+
+        async function generateAudio() {
+            const text = document.getElementById('story-text').value.trim();
+            if (!text) return alert("Vui lòng nhập nội dung!");
+
+            const voice = document.getElementById('voice-select').value;
+            const speedVal = document.getElementById('voice-speed').value;
+            const rate = speedVal >= 0 ? `+${speedVal}%` : `${speedVal}%`;
+
+            document.getElementById('btn-generate').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('player-section').classList.add('hidden');
+
+            const ws = new WebSocket("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4");
+            
+            let audioChunks = [];
+            let boundaries = [];
+            let reqId = generateUUID();
+
+            ws.binaryType = 'arraybuffer';
+
+            ws.onopen = () => {
+                // Gửi thông số cấu hình
+                ws.send(`Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"true"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`);
+                
+                // Gửi Kịch bản SSML
+                const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='vi-VN'><voice name='${voice}'><prosody pitch='+0Hz' rate='${rate}' volume='+0%'>${text}</prosody></voice></speak>`;
+                ws.send(`X-RequestId:${reqId}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`);
+            };
+
+            ws.onmessage = (event) => {
+                if (event.data instanceof ArrayBuffer) {
+                    // Lọc dữ liệu Binary (bỏ header của WebSocket) lấy MP3
+                    const view = new DataView(event.data);
+                    const headerLen = view.getUint16(0);
+                    const audioData = event.data.slice(2 + headerLen);
+                    audioChunks.push(new Uint8Array(audioData));
+                } else {
+                    const strData = event.data;
+                    if (strData.includes("Path:audio.metadata")) {
+                        // Lấy thời gian từng chữ để làm Phụ đề
+                        try {
+                            const jsonStr = strData.split("\r\n\r\n")[1];
+                            const meta = JSON.parse(jsonStr);
+                            meta.Metadata.forEach(m => {
+                                if (m.Type === "WordBoundary") boundaries.push(m.Data);
+                            });
+                        } catch(e){}
+                    } else if (strData.includes("Path:turn.end")) {
+                        // KẾT THÚC QUÁ TRÌNH TẠO
+                        ws.close();
+                        
+                        // 1. Tạo file MP3
+                        const blob = new Blob(audioChunks, { type: 'audio/mpeg' });
+                        const audioUrl = URL.createObjectURL(blob);
+                        document.getElementById('audio-player').src = audioUrl;
+                        
+                        const dlMp3 = document.getElementById('btn-dl-mp3');
+                        dlMp3.href = audioUrl;
+                        dlMp3.download = `Kaito_Audio_${Date.now()}.mp3`;
+
+                        // 2. Tạo file SRT (Gom 10 chữ thành 1 dòng phụ đề)
+                        let srtContent = "";
+                        let srtIndex = 1;
+                        for(let i=0; i<boundaries.length; i+=10) {
+                            const chunk = boundaries.slice(i, i+10);
+                            const startStr = formatSRTTime(chunk[0].Offset);
+                            const last = chunk[chunk.length-1];
+                            const endStr = formatSRTTime(last.Offset + last.Duration);
+                            const subText = chunk.map(c => c.text.text).join(" ");
+                            srtContent += `${srtIndex}\n${startStr} --> ${endStr}\n${subText}\n\n`;
+                            srtIndex++;
+                        }
+                        
+                        const srtBlob = new Blob([srtContent], { type: 'text/plain;charset=utf-8' });
+                        const srtUrl = URL.createObjectURL(srtBlob);
+                        const dlSrt = document.getElementById('btn-dl-srt');
+                        dlSrt.href = srtUrl;
+                        dlSrt.download = `Kaito_Sub_${Date.now()}.srt`;
+
+                        // 3. Hiển thị kết quả
+                        document.getElementById('loading').classList.add('hidden');
+                        document.getElementById('btn-generate').classList.remove('hidden');
+                        document.getElementById('player-section').classList.remove('hidden');
+                    }
+                }
+            };
+
+            ws.onerror = () => {
+                alert("Lỗi kết nối mạng! Vui lòng thử chia nhỏ kịch bản ra một chút nhé.");
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('btn-generate').classList.remove('hidden');
+            };
+        }
+    </script>
+</body>
+</html>
