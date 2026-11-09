@@ -21,10 +21,9 @@
             color: #e2e8f0;
             font-family: 'Segoe UI', system-ui, sans-serif;
             overflow-x: hidden;
-            padding-bottom: 100px; /* Space for player */
+            padding-bottom: 100px;
         }
         
-        /* Night Sky Effects */
         .sky-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -54,7 +53,6 @@
             100% { transform: translateY(-50px); opacity: 0.3; }
         }
 
-        /* Glassmorphism Classes */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -80,20 +78,16 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 20px rgba(139, 92, 246, 0.2);
         }
 
-        /* Utilities */
         .text-gradient { background: linear-gradient(90deg, #c084fc, #60a5fa); -webkit-background-clip: text; color: transparent; }
         .hide { display: none !important; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         
-        /* Custom Scrollbar & Range */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #6b21a8; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #9333ea; }
         input[type="range"] { accent-color: #a855f7; height: 4px; }
         input[type="range"]::-webkit-slider-thumb { background: #fff; box-shadow: 0 0 10px #a855f7; }
-
-        /* Cover Image Ratio */
         .cover-ratio { aspect-ratio: 2 / 3; object-fit: cover; }
     </style>
 </head>
@@ -139,7 +133,6 @@
         <!-- VIEW 1: TRANG CHỦ -->
         <div id="view-home" class="view-section">
             
-            <!-- Banner Cinematic -->
             <div class="relative rounded-2xl overflow-hidden mb-12 shadow-2xl shadow-purple-900/20 glass-panel">
                 <div class="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-blue-900/40 z-10"></div>
                 <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=2094&auto=format&fit=crop" class="w-full h-64 sm:h-80 object-cover opacity-50" alt="Banner">
@@ -155,7 +148,6 @@
                 </div>
             </div>
 
-            <!-- Thanh Lọc Nhanh -->
             <div class="flex flex-wrap gap-3 mb-8" id="category-filters">
                 <button onclick="filterStories('all')" class="px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-bold shadow-lg shadow-purple-500/30">Tất Cả</button>
                 <button onclick="filterStories('Ngôn tình')" class="px-4 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm">Ngôn Tình</button>
@@ -169,7 +161,6 @@
                 <h2 id="section-title" class="text-2xl font-bold text-white"><i class="fas fa-fire text-orange-500 mr-2"></i>Truyện Mới Cập Nhật</h2>
             </div>
             
-            <!-- Lưới Truyện -->
             <div id="story-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
                 <div class="text-center text-purple-400 w-full col-span-full py-10"><i class="fas fa-circle-notch fa-spin text-3xl mb-3"></i><br>Đang kết nối hệ thống...</div>
             </div>
@@ -180,7 +171,6 @@
             <button onclick="navigate('home')" class="text-gray-400 hover:text-purple-400 mb-6 bg-gray-900/50 px-4 py-2 rounded-full transition"><i class="fas fa-arrow-left mr-2"></i> Quay lại</button>
             
             <div class="glass-panel rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row gap-8 mb-8 relative overflow-hidden">
-                <!-- Hiệu ứng sương mù phía sau ảnh -->
                 <div class="absolute -top-20 -left-20 w-64 h-64 bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"></div>
                 
                 <div class="relative w-full md:w-72 shrink-0 group">
@@ -225,13 +215,12 @@
             </div>
         </div>
 
-        <!-- VIEW 3: TỦ TRUYỆN (Lịch sử & Yêu thích) -->
+        <!-- VIEW 3: TỦ TRUYỆN -->
         <div id="view-library" class="view-section hide">
             <h2 class="text-3xl font-black text-white mb-8 border-l-4 border-purple-500 pl-4">Tủ Truyện Của Bạn</h2>
             
             <h3 class="text-xl font-bold text-purple-400 mb-4"><i class="fas fa-heart mr-2"></i>Đang Theo Dõi (Yêu Thích)</h3>
             <div id="fav-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 mb-12">
-                <!-- Chèn bằng JS -->
             </div>
 
             <div class="flex justify-between items-end mb-4 border-b border-gray-800 pb-2">
@@ -239,7 +228,6 @@
                 <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-300">Xóa lịch sử</button>
             </div>
             <div id="history-list" class="space-y-3">
-                <!-- Chèn bằng JS -->
             </div>
         </div>
 
@@ -283,7 +271,7 @@
                         
                         <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center mb-4 bg-gray-900/50 hover:border-blue-500 transition relative">
                             <i class="fas fa-music text-3xl text-gray-500 mb-2"></i>
-                            <p class="text-sm text-gray-400">Nhấn để chọn file MP3 (Khuyên dùng < 40MB)</p>
+                            <p class="text-sm text-gray-400">Nhấn để chọn file MP3</p>
                             <input type="file" id="upload-file" accept="audio/mp3" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
                             <p id="file-name-display" class="text-blue-400 font-bold mt-2 text-xs"></p>
                         </div>
@@ -299,9 +287,8 @@
 
     </main>
 
-    <!-- TRÌNH PHÁT AUDIO (PREMIUM BOTTOM BAR) -->
+    <!-- TRÌNH PHÁT AUDIO -->
     <div id="audio-player-bar" class="fixed bottom-0 left-0 w-full glass-panel border-t border-gray-700 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transform translate-y-full transition-transform duration-500 z-50">
-        <!-- Thanh tiến trình nằm sát viền trên -->
         <div class="absolute top-0 left-0 w-full h-1.5 bg-gray-800 cursor-pointer" id="progress-container">
             <div id="progress-fill" class="h-full bg-gradient-to-r from-purple-500 to-blue-500 w-0 relative">
                 <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_8px_#a855f7]"></div>
@@ -310,7 +297,6 @@
 
         <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-6 mt-1">
             
-            <!-- Info -->
             <div class="flex items-center gap-3 w-full sm:w-1/4">
                 <img id="player-cover" src="https://via.placeholder.com/50" onerror="this.src='https://via.placeholder.com/50?text=KAI+TO'" class="w-12 h-12 rounded object-cover shadow-lg border border-gray-700">
                 <div class="overflow-hidden">
@@ -319,7 +305,6 @@
                 </div>
             </div>
 
-            <!-- Main Controls -->
             <div class="flex flex-col items-center w-full sm:w-2/4">
                 <div class="flex items-center justify-center space-x-4 sm:space-x-6">
                     <button onclick="changeSpeed()" id="btn-speed" class="text-xs font-bold text-gray-400 hover:text-white border border-gray-600 rounded px-2 py-0.5" title="Tốc độ">1x</button>
@@ -339,13 +324,11 @@
                 </div>
             </div>
 
-            <!-- Volume / Extra -->
             <div class="hidden sm:flex items-center justify-end w-1/4 space-x-3">
                 <i class="fas fa-volume-up text-gray-400 text-sm"></i>
                 <input type="range" id="volume-bar" min="0" max="1" step="0.05" value="1" class="w-24">
             </div>
             
-            <!-- Thẻ Audio Ẩn -->
             <audio id="core-audio" class="hidden"></audio>
         </div>
     </div>
@@ -364,11 +347,9 @@
         const progressFill = document.getElementById('progress-fill');
         const progressContainer = document.getElementById('progress-container');
         
-        // Dữ liệu LocalStorage
         let favorites = JSON.parse(localStorage.getItem('kaito_favorites')) || [];
         let listenHistory = JSON.parse(localStorage.getItem('kaito_history')) || [];
 
-        // 1. CHUYỂN ĐỔI GIAO DIỆN (SPA)
         function navigate(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hide'));
             document.getElementById(`view-${viewId}`).classList.remove('hide');
@@ -378,7 +359,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 2. TẢI VÀ RENDER TRANG CHỦ
         async function loadHome() {
             try {
                 if(allStories.length === 0) {
@@ -387,16 +367,13 @@
                 }
                 renderGrid(allStories);
                 
-                // Nạp lịch sử nghe cuối cùng (Nếu có)
                 const lastPos = JSON.parse(localStorage.getItem('kaito_last_play'));
                 if(lastPos && audio.src === "") {
-                    // Cài đặt giao diện player, nhưng không tự động phát
                     document.getElementById('audio-player-bar').classList.remove('translate-y-full');
                     document.getElementById('player-title').innerText = lastPos.sTitle;
                     document.getElementById('player-ep').innerText = lastPos.epName + ' (Đã lưu vị trí)';
                     document.getElementById('player-cover').src = lastPos.sCover;
                 }
-                
             } catch (e) {
                 document.getElementById('story-grid').innerHTML = '<p class="text-red-500 col-span-full">Lỗi kết nối máy chủ! Vui lòng tải lại trang.</p>';
             }
@@ -433,7 +410,6 @@
             });
         }
 
-        // TÌM KIẾM VÀ LỌC
         function searchStories() {
             const keyword = document.getElementById('search-input').value.toLowerCase();
             document.getElementById('section-title').innerHTML = `<i class="fas fa-search text-blue-500 mr-2"></i>Kết quả cho: "${keyword}"`;
@@ -443,7 +419,6 @@
 
         function filterStories(genre) {
             navigate('home');
-            // Cập nhật UI nút bấm
             document.querySelectorAll('#category-filters button').forEach(b => {
                 b.className = "px-4 py-2 rounded-full glass-card text-gray-300 hover:text-white text-sm transition";
                 if(b.innerText.toLowerCase() === genre.toLowerCase() || (genre === 'all' && b.innerText === 'Tất Cả')) {
@@ -461,7 +436,6 @@
             }
         }
 
-        // 3. CHI TIẾT TRUYỆN
         async function openStory(id) {
             navigate('detail');
             currentStoryData = allStories.find(s => s.id === id);
@@ -502,7 +476,6 @@
             });
         }
 
-        // TÍNH NĂNG YÊU THÍCH
         function updateFavBtnUI() {
             if(!currentStoryData) return;
             const btn = document.getElementById('btn-fav');
@@ -525,12 +498,10 @@
             updateFavBtnUI();
         }
 
-        // TỦ TRUYỆN
         function renderLibrary() {
             const favGrid = document.getElementById('fav-grid');
             const histList = document.getElementById('history-list');
             
-            // Render Yêu thích
             const favStories = allStories.filter(s => favorites.includes(s.id));
             if(favStories.length === 0) favGrid.innerHTML = '<p class="text-gray-500 col-span-full">Bạn chưa có truyện yêu thích nào.</p>';
             else {
@@ -545,7 +516,6 @@
                 });
             }
 
-            // Render Lịch sử
             if(listenHistory.length === 0) histList.innerHTML = '<p class="text-gray-500">Chưa có lịch sử nghe.</p>';
             else {
                 histList.innerHTML = '';
@@ -574,21 +544,22 @@
             }
         }
 
-        // 4. TRÌNH PHÁT AUDIO NÂNG CAO
+        // =========================================================
+        // ĐÃ THÊM LỆNH "&confirm=t" VÀO ĐÂY ĐỂ VƯỢT QUÁ GIỚI HẠN 25MB
+        // =========================================================
         function playAudio(index, forceNew = false) {
             if (index < 0 || index >= currentEpisodes.length) return;
             currentPlayingIndex = index;
             const ep = currentEpisodes[index];
             
-            // Xử lý giữ vị trí
             let startAt = 0;
             const lastPos = JSON.parse(localStorage.getItem('kaito_last_play'));
             if (!forceNew && lastPos && lastPos.epId === ep.id) {
                 startAt = lastPos.time;
             }
 
-            // Link Google Drive API
-            const audioUrl = `https://drive.google.com/uc?export=download&id=${ep.driveId}`;
+            // Link Google Drive API (đã thêm &confirm=t)
+            const audioUrl = `https://drive.google.com/uc?export=download&confirm=t&id=${ep.driveId}`;
             audio.src = audioUrl;
             
             audio.onloadedmetadata = () => {
@@ -596,7 +567,6 @@
                 audio.play();
             };
 
-            // Hiện Bar
             document.getElementById('audio-player-bar').classList.remove('translate-y-full');
             document.getElementById('btn-play').innerHTML = '<i class="fas fa-pause text-xl"></i>';
             document.getElementById('player-ep').innerText = ep.epName;
@@ -605,11 +575,10 @@
                 document.getElementById('player-title').innerText = currentStoryData.title;
                 document.getElementById('player-cover').src = currentStoryData.cover || 'https://via.placeholder.com/50?text=KAI+TO';
                 
-                // Cập nhật Lịch sử nghe
                 const histItem = { sId: currentStoryData.id, sTitle: currentStoryData.title, sCover: currentStoryData.cover, epId: ep.id, epName: ep.epName, time: new Date().getTime() };
-                listenHistory = listenHistory.filter(h => h.sId !== currentStoryData.id); // Xóa cũ
+                listenHistory = listenHistory.filter(h => h.sId !== currentStoryData.id); 
                 listenHistory.push(histItem);
-                if(listenHistory.length > 20) listenHistory.shift(); // Giữ tối đa 20
+                if(listenHistory.length > 20) listenHistory.shift(); 
                 localStorage.setItem('kaito_history', JSON.stringify(listenHistory));
             }
         }
@@ -631,7 +600,6 @@
         
         audio.addEventListener('ended', playNext); 
         
-        // Cập nhật tiến trình & Lưu LocalStorage
         audio.addEventListener('timeupdate', () => {
             if (audio.duration) {
                 const percent = (audio.currentTime / audio.duration) * 100;
@@ -639,7 +607,6 @@
                 document.getElementById('time-current').innerText = formatTime(audio.currentTime);
                 document.getElementById('time-total').innerText = formatTime(audio.duration);
 
-                // Auto Save vị trí mỗi giây
                 if(currentStoryData && currentEpisodes[currentPlayingIndex]) {
                     localStorage.setItem('kaito_last_play', JSON.stringify({
                         sTitle: currentStoryData.title,
@@ -652,7 +619,6 @@
             }
         });
 
-        // Click trên thanh Progress (Custom UI)
         progressContainer.addEventListener('click', (e) => {
             if (audio.duration) {
                 const rect = progressContainer.getBoundingClientRect();
@@ -661,7 +627,6 @@
             }
         });
 
-        // Âm lượng
         document.getElementById('volume-bar').addEventListener('input', (e) => {
             audio.volume = e.target.value;
         });
@@ -682,9 +647,8 @@
             document.getElementById('btn-speed').innerText = speeds[speedIdx] + 'x';
         }
 
-        // Chia sẻ
         function shareStory() {
-            const url = window.location.href; // Hoặc tạo url cụ thể nếu dùng routing
+            const url = window.location.href; 
             if (navigator.share) {
                 navigator.share({ title: currentStoryData.title, text: 'Nghe truyện audio tuyệt hay trên KAI TỒ AUDIO', url: url });
             } else {
@@ -693,16 +657,13 @@
             }
         }
 
-        // 5. CHỨC NĂNG ADMIN (CẢI TIẾN UI, GIỮ NGUYÊN LOGIC)
         function populateAdminSelect() {
             const sel = document.getElementById('upload-story-id');
             sel.innerHTML = '<option value="">-- Chọn bộ truyện --</option>';
-            // Sắp xếp truyện mới nhất lên đầu trong Admin
             const sorted = [...allStories].reverse(); 
             sorted.forEach(s => sel.innerHTML += `<option value="${s.id}">${s.title}</option>`);
         }
 
-        // Hiển thị tên file khi chọn file MP3
         document.getElementById('upload-file').addEventListener('change', function(e) {
             const name = e.target.files[0] ? e.target.files[0].name : '';
             document.getElementById('file-name-display').innerText = name;
@@ -728,7 +689,7 @@
                     document.getElementById('add-title').value = '';
                     document.getElementById('add-cover').value = '';
                     document.getElementById('add-desc').value = '';
-                    loadHome(); // Tải lại data
+                    loadHome(); 
                     populateAdminSelect(); 
                 } else alert("❌ Lỗi: " + res.message);
             }).catch(e => {
@@ -745,7 +706,6 @@
             const order = document.getElementById('upload-order').value;
             
             if(!pass || !file || !storyId || !epName || !order) return alert("Vui lòng điền đủ tất cả các ô và chọn file MP3!");
-            if(file.size > 40000000) return alert("File quá lớn! Hãy dùng file Audio dưới 40MB.");
 
             const status = document.getElementById('upload-status');
             const btn = document.getElementById('btn-upload');
@@ -783,7 +743,6 @@
             reader.readAsDataURL(file);
         }
 
-        // Khởi động
         loadHome();
     </script>
 </body>
