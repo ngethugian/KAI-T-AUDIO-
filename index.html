@@ -3,211 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAI TỒ AUDIO STUDIO - GITHUB VERSION</title>
+    <title>KAI TỒ REVIEW - Thư Viện Audio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background-color: #0b0f19; color: #e2e8f0; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(147, 51, 234, 0.3); backdrop-filter: blur(10px); }
-        .gradient-text { background: linear-gradient(90deg, #9333ea, #3b82f6); -webkit-background-clip: text; color: transparent; }
-        .btn-primary { background: linear-gradient(90deg, #9333ea, #3b82f6); transition: all 0.3s ease; }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4); }
+        body { background-color: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding-bottom: 90px; }
+        .bg-glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border-top: 1px solid rgba(147, 51, 234, 0.3); }
+        .text-gradient { background: linear-gradient(90deg, #a855f7, #3b82f6); -webkit-background-clip: text; color: transparent; }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: translateY(-5px); }
+        .hide { display: none !important; }
+        input[type="range"] { accent-color: #a855f7; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden font-sans">
-    
-    <!-- Sidebar Menu -->
-    <aside class="w-64 glass-panel flex flex-col h-full z-10 border-r border-purple-900/50">
-        <div class="p-6 text-center border-b border-purple-900/50">
-            <h1 class="text-2xl font-black gradient-text tracking-wider">KAI TỒ</h1>
-            <p class="text-xs text-blue-400 font-semibold uppercase tracking-widest mt-1">Audio Studio (No API)</p>
-        </div>
-        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="newProject()" class="w-full flex items-center p-3 rounded-lg bg-purple-600/20 text-purple-300 hover:bg-purple-600/40 transition">
-                <i class="fas fa-plus mr-3"></i> Dự án mới
-            </button>
-        </nav>
-        <div class="p-4 text-xs text-gray-500 text-center border-t border-purple-900/50">
-            Chạy 100% trên Trình duyệt<br>Bản triển khai GitHub
-        </div>
-    </aside>
+<body>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
-        <div class="flex-1 overflow-y-auto p-8 flex gap-6">
-            
-            <!-- Cột trái: Nhập liệu -->
-            <div class="w-2/3 flex flex-col space-y-4">
-                <div class="glass-panel rounded-xl p-4 flex flex-col h-full">
-                    <div class="flex justify-between items-center mb-2">
-                        <h2 class="font-bold text-blue-400"><i class="fas fa-keyboard mr-2"></i>Nội dung truyện</h2>
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-gray-900 border-b border-gray-800 p-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="navigate('home')">
+                <i class="fas fa-headphones-alt text-purple-500 text-3xl"></i>
+                <h1 class="text-2xl font-black text-gradient uppercase tracking-widest">KAI TỒ REVIEW</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden sm:block">
+                    <input type="text" placeholder="Tìm truyện..." class="bg-gray-800 text-sm rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white w-64">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <button onclick="navigate('admin')" class="text-gray-400 hover:text-white transition"><i class="fas fa-cog"></i> Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="app-container" class="max-w-7xl mx-auto p-4 mt-4">
+        
+        <!-- VIEW 1: TRANG CHỦ -->
+        <div id="view-home" class="view-section">
+            <h2 class="text-xl font-bold border-l-4 border-purple-500 pl-3 mb-6 uppercase">Truyện Mới Cập Nhật</h2>
+            <div id="story-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                <!-- Chèn bằng JS -->
+                <div class="text-center text-gray-500 w-full col-span-full"><i class="fas fa-spinner fa-spin text-2xl"></i> Đang tải dữ liệu...</div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: CHI TIẾT TRUYỆN -->
+        <div id="view-detail" class="view-section hide">
+            <button onclick="navigate('home')" class="text-gray-400 hover:text-purple-400 mb-6"><i class="fas fa-arrow-left"></i> Quay lại</button>
+            <div class="flex flex-col md:flex-row gap-8">
+                <img id="det-cover" src="" class="w-full md:w-64 h-96 object-cover rounded-xl shadow-2xl">
+                <div class="flex-1">
+                    <h1 id="det-title" class="text-4xl font-bold mb-2 text-white">Tên truyện</h1>
+                    <div class="flex space-x-3 mb-4 text-sm text-gray-400">
+                        <span id="det-genre" class="bg-purple-900/50 px-3 py-1 rounded-full text-purple-300">Thể loại</span>
+                        <span id="det-status" class="bg-blue-900/50 px-3 py-1 rounded-full text-blue-300">Trạng thái</span>
                     </div>
-                    <textarea id="story-text" class="w-full flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-4 text-gray-200 focus:outline-none focus:border-purple-500 resize-none leading-relaxed" placeholder="Dán nội dung truyện vào đây. Lưu ý: Xử lý trực tiếp trên web nên cắt thành từng chương/đoạn (dưới 3000 chữ/lần) để AI chạy mượt nhất..."></textarea>
+                    <p id="det-desc" class="text-gray-300 mb-6 leading-relaxed">Mô tả...</p>
+                    
+                    <h3 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Danh sách tập</h3>
+                    <div id="ep-list" class="space-y-2 max-h-96 overflow-y-auto pr-2">
+                        <!-- Danh sách tập -->
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Cột phải: Cài đặt & Tạo Audio -->
-            <div class="w-1/3 flex flex-col space-y-6">
-                <!-- Cài đặt giọng đọc -->
-                <div class="glass-panel rounded-xl p-6">
-                    <h2 class="font-bold text-purple-400 mb-4"><i class="fas fa-sliders-h mr-2"></i>Cài đặt AI Voice</h2>
-                    
-                    <label class="block text-sm mb-1 text-gray-400">Chọn giọng đọc</label>
-                    <select id="voice-select" class="w-full bg-gray-900 border border-gray-700 rounded p-2 mb-4 outline-none">
-                        <option value="vi-VN-HoaiMyNeural">Hoài My (Nữ, Truyền cảm)</option>
-                        <option value="vi-VN-NamMinhNeural">Nam Minh (Nam, Trầm ấm)</option>
+        <!-- VIEW 3: TRANG ADMIN -->
+        <div id="view-admin" class="view-section hide max-w-2xl mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl">
+            <h2 class="text-2xl font-bold text-center text-gradient mb-6">QUẢN TRỊ KHO AUDIO</h2>
+            <div class="space-y-4">
+                <input type="password" id="admin-pass" placeholder="Mật khẩu Admin" class="w-full bg-gray-900 border border-gray-700 rounded p-3 text-white">
+                
+                <div class="border border-purple-500/30 p-4 rounded-lg bg-purple-900/10">
+                    <h3 class="font-bold text-purple-400 mb-3"><i class="fas fa-book"></i> THÊM BỘ TRUYỆN MỚI</h3>
+                    <input type="text" id="add-title" placeholder="Tên truyện" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <input type="text" id="add-cover" placeholder="Link ảnh bìa (URL)" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <input type="text" id="add-genre" placeholder="Thể loại (VD: Ngôn tình, Trọng sinh...)" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <textarea id="add-desc" placeholder="Mô tả tóm tắt..." class="w-full bg-gray-900 rounded p-2 mb-2"></textarea>
+                    <button onclick="addStory()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded w-full font-bold">TẠO TRUYỆN</button>
+                </div>
+
+                <div class="border border-blue-500/30 p-4 rounded-lg bg-blue-900/10 mt-4">
+                    <h3 class="font-bold text-blue-400 mb-3"><i class="fas fa-upload"></i> ĐĂNG TẬP AUDIO (MP3)</h3>
+                    <select id="upload-story-id" class="w-full bg-gray-900 rounded p-2 mb-2 text-white">
+                        <option value="">-- Chọn Truyện --</option>
+                        <!-- Danh sách truyện nạp qua JS -->
                     </select>
-
-                    <label class="block text-sm mb-1 text-gray-400">Tốc độ đọc</label>
-                    <input type="range" id="voice-speed" min="-50" max="50" value="0" class="w-full mb-6">
-                    
-                    <button id="btn-generate" onclick="generateAudio()" class="w-full btn-primary text-white font-bold py-3 px-4 rounded-lg shadow-lg flex justify-center items-center">
-                        <i class="fas fa-magic mr-2"></i> SẢN XUẤT AUDIO
-                    </button>
-                    
-                    <div id="loading" class="hidden text-center mt-3 text-sm text-purple-400 font-bold">
-                        <i class="fas fa-circle-notch fa-spin mr-1"></i> Đang kết nối AI và tạo Audio...
-                    </div>
-                </div>
-
-                <!-- Trình phát & Tải xuống -->
-                <div id="player-section" class="glass-panel rounded-xl p-6 hidden">
-                    <h2 class="font-bold text-green-400 mb-4"><i class="fas fa-check-circle mr-2"></i>Thành công!</h2>
-                    
-                    <audio id="audio-player" controls class="w-full mb-6 rounded"></audio>
-
-                    <div class="space-y-3">
-                        <a id="btn-dl-mp3" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded transition flex justify-between px-4 cursor-pointer text-white">
-                            <span><i class="fas fa-file-audio mr-2"></i> Tải Audio (MP3)</span><i class="fas fa-download mt-1"></i>
-                        </a>
-                        <a id="btn-dl-srt" class="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded transition flex justify-between px-4 cursor-pointer text-white">
-                            <span><i class="fas fa-closed-captioning mr-2"></i> Tải Phụ đề (SRT)</span><i class="fas fa-download mt-1"></i>
-                        </a>
-                    </div>
+                    <input type="text" id="upload-ep-name" placeholder="Tên tập (VD: Tập 1, Tập 2...)" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <input type="number" id="upload-order" placeholder="Số thứ tự (1, 2, 3...)" class="w-full bg-gray-900 rounded p-2 mb-2">
+                    <input type="file" id="upload-file" accept="audio/mp3" class="w-full bg-gray-900 rounded p-2 mb-2 text-sm text-gray-400">
+                    <button onclick="uploadAudio()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded w-full font-bold">TẢI AUDIO LÊN DRIVE</button>
+                    <p id="upload-status" class="text-yellow-400 text-sm text-center mt-2"></p>
                 </div>
             </div>
         </div>
+
     </main>
 
+    <!-- TRÌNH PHÁT AUDIO (FIXED BOTTOM) -->
+    <div id="audio-player-bar" class="fixed bottom-0 left-0 right-0 bg-glass shadow-2xl transform translate-y-full transition-transform duration-500 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+            
+            <img id="player-cover" src="https://via.placeholder.com/50" class="w-14 h-14 rounded-lg object-cover shadow-lg hidden sm:block">
+            
+            <div class="flex-1">
+                <div class="flex justify-between items-end mb-1">
+                    <div>
+                        <div id="player-title" class="font-bold text-white text-sm sm:text-base line-clamp-1">Tên Truyện</div>
+                        <div id="player-ep" class="text-xs text-purple-400">Tập 1</div>
+                    </div>
+                    <div class="text-xs text-gray-400 font-mono"><span id="time-current">00:00</span> / <span id="time-total">00:00</span></div>
+                </div>
+                <input type="range" id="progress-bar" value="0" max="100" class="w-full h-1 bg-gray-600 rounded-lg cursor-pointer">
+            </div>
+
+            <div class="flex items-center space-x-3 sm:space-x-5 text-gray-300">
+                <button onclick="changeSpeed()" id="btn-speed" class="text-xs font-bold bg-gray-700 px-2 py-1 rounded hidden sm:block">1x</button>
+                <button onclick="playPrev()" class="hover:text-white text-lg"><i class="fas fa-step-backward"></i></button>
+                <button onclick="togglePlay()" id="btn-play" class="text-purple-400 hover:text-purple-300 text-3xl"><i class="fas fa-play-circle"></i></button>
+                <button onclick="playNext()" class="hover:text-white text-lg"><i class="fas fa-step-forward"></i></button>
+            </div>
+
+            <!-- Thẻ Audio ẩn (Core xử lý âm thanh) -->
+            <audio id="core-audio" class="hidden"></audio>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        function newProject() {
-            document.getElementById('story-text').value = '';
-            document.getElementById('player-section').classList.add('hidden');
+        // ========= ĐÃ CẬP NHẬT API CHUẨN CỦA BẠN =========
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwL9FxquI_DSl1h58yg3BKFqF9a5HqKiwiVHy2ZdA-37WfV4nLJt99iz4tNzNSNJCwq/exec';
+        // ===================================================
+        
+        let allStories = [];
+        let currentEpisodes = [];
+        let currentPlayingIndex = -1;
+        const audio = document.getElementById('core-audio');
+        const progressBar = document.getElementById('progress-bar');
+        
+        // 1. CHUYỂN ĐỔI GIAO DIỆN (SPA)
+        function navigate(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hide'));
+            document.getElementById(`view-${viewId}`).classList.remove('hide');
+            if(viewId === 'home') loadHome();
+            if(viewId === 'admin') populateAdminSelect();
+            window.scrollTo(0, 0);
         }
 
-        // Hàm tạo ID ngẫu nhiên cho WebSocket
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
+        // 2. TẢI DỮ LIỆU TỪ GOOGLE SHEETS
+        async function loadHome() {
+            try {
+                const res = await fetch(`${API_URL}?action=getStories`);
+                allStories = await res.json();
+                const grid = document.getElementById('story-grid');
+                grid.innerHTML = '';
+                
+                if (allStories.length === 0) {
+                    grid.innerHTML = '<p class="text-gray-400 col-span-full">Chưa có truyện nào. Hãy vào trang Admin để thêm truyện!</p>';
+                    return;
+                }
+
+                allStories.forEach(s => {
+                    grid.innerHTML += `
+                        <div class="bg-gray-800 rounded-xl overflow-hidden shadow-lg cursor-pointer hover-scale" onclick="openStory('${s.id}')">
+                            <div class="relative">
+                                <img src="${s.cover}" class="w-full h-56 object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2">
+                                    <span class="text-xs bg-purple-600 text-white px-2 py-0.5 rounded">${s.status}</span>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <h3 class="font-bold text-white text-sm line-clamp-2">${s.title}</h3>
+                                <p class="text-xs text-gray-400 mt-1">${s.genre}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                document.getElementById('story-grid').innerHTML = '<p class="text-red-500 col-span-full">Lỗi kết nối máy chủ! Hãy chắc chắn link API của bạn đang hoạt động.</p>';
+            }
+        }
+
+        // 3. CHI TIẾT TRUYỆN & DANH SÁCH TẬP
+        async function openStory(id) {
+            navigate('detail');
+            const story = allStories.find(s => s.id === id);
+            document.getElementById('det-title').innerText = story.title;
+            document.getElementById('det-cover').src = story.cover || 'https://via.placeholder.com/300x400';
+            document.getElementById('det-desc').innerText = story.desc;
+            document.getElementById('det-genre').innerText = story.genre;
+            document.getElementById('det-status').innerText = story.status;
+
+            const epListEl = document.getElementById('ep-list');
+            epListEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải danh sách tập...';
+
+            const res = await fetch(`${API_URL}?action=getEpisodes&storyId=${id}`);
+            currentEpisodes = await res.json();
+            
+            epListEl.innerHTML = '';
+            if(currentEpisodes.length === 0) epListEl.innerHTML = '<p class="text-gray-500">Chưa có tập nào được đăng.</p>';
+            
+            currentEpisodes.forEach((ep, index) => {
+                epListEl.innerHTML += `
+                    <div class="flex justify-between items-center bg-gray-800 p-3 rounded-lg hover:bg-gray-700 transition cursor-pointer" onclick="playAudio(${index}, '${story.title.replace(/'/g, "\\'")}', '${story.cover}')">
+                        <div class="flex items-center">
+                            <button class="w-10 h-10 rounded-full bg-purple-900/50 text-purple-400 flex justify-center items-center mr-4"><i class="fas fa-play"></i></button>
+                            <span class="font-bold text-gray-200">${ep.epName}</span>
+                        </div>
+                    </div>
+                `;
             });
         }
 
-        // Chuyển đổi định dạng thời gian cho SRT
-        function formatSRTTime(ticks) {
-            const msTotal = Math.floor(ticks / 10000);
-            const ms = msTotal % 1000;
-            const sTotal = Math.floor(msTotal / 1000);
-            const s = sTotal % 60;
-            const mTotal = Math.floor(sTotal / 60);
-            const m = mTotal % 60;
-            const h = Math.floor(mTotal / 60);
-            return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')},${ms.toString().padStart(3,'0')}`;
-        }
-
-        async function generateAudio() {
-            const text = document.getElementById('story-text').value.trim();
-            if (!text) return alert("Vui lòng nhập nội dung!");
-
-            const voice = document.getElementById('voice-select').value;
-            const speedVal = document.getElementById('voice-speed').value;
-            const rate = speedVal >= 0 ? `+${speedVal}%` : `${speedVal}%`;
-
-            document.getElementById('btn-generate').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('player-section').classList.add('hidden');
-
-            const ws = new WebSocket("wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=6A5AA1D4EAFF4E9FB37E23D68491D6F4");
+        // 4. TRÌNH PHÁT AUDIO CORE
+        function playAudio(index, storyTitle = null, storyCover = null) {
+            if (index < 0 || index >= currentEpisodes.length) return;
+            currentPlayingIndex = index;
+            const ep = currentEpisodes[index];
             
-            let audioChunks = [];
-            let boundaries = [];
-            let reqId = generateUUID();
+            // Lấy Audio stream trực tiếp từ Google Drive
+            const audioUrl = `https://docs.google.com/uc?export=download&id=${ep.driveId}`;
+            audio.src = audioUrl;
+            audio.play();
 
-            ws.binaryType = 'arraybuffer';
-
-            ws.onopen = () => {
-                // Gửi thông số cấu hình
-                ws.send(`Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataoptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"true"},"outputFormat":"audio-24khz-48kbitrate-mono-mp3"}}}}`);
-                
-                // Gửi Kịch bản SSML
-                const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='vi-VN'><voice name='${voice}'><prosody pitch='+0Hz' rate='${rate}' volume='+0%'>${text}</prosody></voice></speak>`;
-                ws.send(`X-RequestId:${reqId}\r\nContent-Type:application/ssml+xml\r\nPath:ssml\r\n\r\n${ssml}`);
-            };
-
-            ws.onmessage = (event) => {
-                if (event.data instanceof ArrayBuffer) {
-                    // Lọc dữ liệu Binary (bỏ header của WebSocket) lấy MP3
-                    const view = new DataView(event.data);
-                    const headerLen = view.getUint16(0);
-                    const audioData = event.data.slice(2 + headerLen);
-                    audioChunks.push(new Uint8Array(audioData));
-                } else {
-                    const strData = event.data;
-                    if (strData.includes("Path:audio.metadata")) {
-                        // Lấy thời gian từng chữ để làm Phụ đề
-                        try {
-                            const jsonStr = strData.split("\r\n\r\n")[1];
-                            const meta = JSON.parse(jsonStr);
-                            meta.Metadata.forEach(m => {
-                                if (m.Type === "WordBoundary") boundaries.push(m.Data);
-                            });
-                        } catch(e){}
-                    } else if (strData.includes("Path:turn.end")) {
-                        // KẾT THÚC QUÁ TRÌNH TẠO
-                        ws.close();
-                        
-                        // 1. Tạo file MP3
-                        const blob = new Blob(audioChunks, { type: 'audio/mpeg' });
-                        const audioUrl = URL.createObjectURL(blob);
-                        document.getElementById('audio-player').src = audioUrl;
-                        
-                        const dlMp3 = document.getElementById('btn-dl-mp3');
-                        dlMp3.href = audioUrl;
-                        dlMp3.download = `Kaito_Audio_${Date.now()}.mp3`;
-
-                        // 2. Tạo file SRT (Gom 10 chữ thành 1 dòng phụ đề)
-                        let srtContent = "";
-                        let srtIndex = 1;
-                        for(let i=0; i<boundaries.length; i+=10) {
-                            const chunk = boundaries.slice(i, i+10);
-                            const startStr = formatSRTTime(chunk[0].Offset);
-                            const last = chunk[chunk.length-1];
-                            const endStr = formatSRTTime(last.Offset + last.Duration);
-                            const subText = chunk.map(c => c.text.text).join(" ");
-                            srtContent += `${srtIndex}\n${startStr} --> ${endStr}\n${subText}\n\n`;
-                            srtIndex++;
-                        }
-                        
-                        const srtBlob = new Blob([srtContent], { type: 'text/plain;charset=utf-8' });
-                        const srtUrl = URL.createObjectURL(srtBlob);
-                        const dlSrt = document.getElementById('btn-dl-srt');
-                        dlSrt.href = srtUrl;
-                        dlSrt.download = `Kaito_Sub_${Date.now()}.srt`;
-
-                        // 3. Hiển thị kết quả
-                        document.getElementById('loading').classList.add('hidden');
-                        document.getElementById('btn-generate').classList.remove('hidden');
-                        document.getElementById('player-section').classList.remove('hidden');
-                    }
-                }
-            };
-
-            ws.onerror = () => {
-                alert("Lỗi kết nối mạng! Vui lòng thử chia nhỏ kịch bản ra một chút nhé.");
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('btn-generate').classList.remove('hidden');
-            };
+            // Hiện Player Bar
+            document.getElementById('audio-player-bar').classList.remove('translate-y-full');
+            document.getElementById('btn-play').innerHTML = '<i class="fas fa-pause-circle"></i>';
+            document.getElementById('player-ep').innerText = ep.epName;
+            
+            if(storyTitle) {
+                document.getElementById('player-title').innerText = storyTitle;
+                document.getElementById('player-cover').src = storyCover || 'https://via.placeholder.com/50';
+            }
         }
+
+        function togglePlay() {
+            if (audio.paused) { audio.play(); document.getElementById('btn-play').innerHTML = '<i class="fas fa-pause-circle"></i>'; }
+            else { audio.pause(); document.getElementById('btn-play').innerHTML = '<i class="fas fa-play-circle"></i>'; }
+        }
+
+        function playNext() { playAudio(currentPlayingIndex + 1); }
+        function playPrev() { playAudio(currentPlayingIndex - 1); }
+        
+        audio.addEventListener('ended', playNext); // Tự động phát tập tiếp theo khi kết thúc
+        
+        // Cập nhật thanh thời gian
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                progressBar.value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('time-current').innerText = formatTime(audio.currentTime);
+                document.getElementById('time-total').innerText = formatTime(audio.duration);
+            }
+        });
+
+        // Kéo thanh tiến trình
+        progressBar.addEventListener('input', (e) => {
+            if (audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration;
+        });
+
+        function formatTime(secs) {
+            const m = Math.floor(secs / 60) || 0;
+            const s = Math.floor(secs % 60) || 0;
+            return `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
+        }
+
+        // Chỉnh tốc độ phát
+        let speeds = [1, 1.25, 1.5, 2, 0.75];
+        let speedIdx = 0;
+        function changeSpeed() {
+            speedIdx = (speedIdx + 1) % speeds.length;
+            audio.playbackRate = speeds[speedIdx];
+            document.getElementById('btn-speed').innerText = speeds[speedIdx] + 'x';
+        }
+
+        // 5. CHỨC NĂNG ADMIN
+        function populateAdminSelect() {
+            const sel = document.getElementById('upload-story-id');
+            sel.innerHTML = '<option value="">-- Chọn Truyện --</option>';
+            allStories.forEach(s => sel.innerHTML += `<option value="${s.id}">${s.title}</option>`);
+        }
+
+        async function addStory() {
+            const pass = document.getElementById('admin-pass').value;
+            const title = document.getElementById('add-title').value;
+            const cover = document.getElementById('add-cover').value;
+            if(!pass || !title) return alert("Vui lòng điền đủ Tên truyện và Mật khẩu!");
+            
+            // Hiện thông báo đang tạo...
+            document.querySelector('#view-admin button').innerText = 'ĐANG TẠO...';
+            
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams({action: 'addStory', password: pass, title: title, coverUrl: cover, desc: document.getElementById('add-desc').value, genre: document.getElementById('add-genre').value, status: 'Đang cập nhật'})
+            }).then(r => r.json()).then(res => {
+                document.querySelector('#view-admin button').innerText = 'TẠO TRUYỆN'; // Reset nút
+                if(res.status === 'success') { 
+                    alert("✅ Thêm truyện thành công!"); 
+                    // Reset form
+                    document.getElementById('add-title').value = '';
+                    document.getElementById('add-cover').value = '';
+                    document.getElementById('add-desc').value = '';
+                    document.getElementById('add-genre').value = '';
+                    loadHome(); 
+                    populateAdminSelect(); 
+                } else {
+                    alert("❌ Lỗi: " + res.message);
+                }
+            }).catch(e => {
+                document.querySelector('#view-admin button').innerText = 'TẠO TRUYỆN';
+                alert("Lỗi kết nối. Vui lòng thử lại!");
+            });
+        }
+
+        function uploadAudio() {
+            const pass = document.getElementById('admin-pass').value;
+            const file = document.getElementById('upload-file').files[0];
+            const storyId = document.getElementById('upload-story-id').value;
+            const epName = document.getElementById('upload-ep-name').value;
+            const order = document.getElementById('upload-order').value;
+            
+            if(!pass || !file || !storyId || !epName || !order) return alert("Vui lòng điền đủ tất cả các ô và chọn file!");
+            
+            // Giới hạn Google Apps Script (khoảng ~50MB), khuyên dùng file MP3 < 40MB
+            if(file.size > 40000000) return alert("File quá lớn! Hãy dùng file Audio dưới 40MB (Nên render MP3 bitrate 128kbps).");
+
+            document.getElementById('upload-status').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải file lên Drive... Vui lòng không đóng trang này!';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result.split(',')[1]; // Chỉ lấy đoạn mã hóa, bỏ phần data:audio/mp3;base64,
+                
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({
+                        action: 'uploadAudio', password: pass, storyId: storyId,
+                        epName: epName, order: order, fileName: file.name, mimeType: file.type, fileData: base64
+                    })
+                }).then(r => r.json()).then(res => {
+                    if(res.status === 'success') {
+                        document.getElementById('upload-status').innerHTML = '<span class="text-green-400">✅ Đã tải lên và lưu vào hệ thống thành công!</span>';
+                        // Reset form upload
+                        document.getElementById('upload-ep-name').value = '';
+                        document.getElementById('upload-order').value = parseInt(order) + 1; // Tự động nhảy số thứ tự tiếp theo
+                        document.getElementById('upload-file').value = '';
+                    } else {
+                        document.getElementById('upload-status').innerHTML = '<span class="text-red-400">❌ Lỗi: ' + res.message + '</span>';
+                    }
+                }).catch(e => {
+                    document.getElementById('upload-status').innerHTML = '<span class="text-red-400">❌ Lỗi đường truyền mạng!</span>';
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Khởi động trang web
+        loadHome();
     </script>
 </body>
 </html>
